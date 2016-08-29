@@ -11,10 +11,14 @@ import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 
 import job.MyJob;
+import model.ConfigBean;
+import model.ConfigDao;
 
 public class ControllerCadastro {
 	private SchedulerFactory schedFact;
+	private Scheduler sched;
 	private JobDetail job;
+	private Trigger trigger;
 	public static ControllerCadastro instance;
 	
 	public static ControllerCadastro getInstance(){
@@ -23,44 +27,58 @@ public class ControllerCadastro {
 		}
 		return instance;
 	}
-	public void iniciarProcesso(){
-		//CadastroDao cd = new CadastroDao();
-		//List<CadastroBean>listaCadastro= cd.lerCadastro();
-        try {
+	public void initialize(String agendamento){
+
+		try {
             schedFact = new StdSchedulerFactory();
             Scheduler sched = schedFact.getScheduler();
             sched.start();
-            
             job = JobBuilder.newJob(MyJob.class)
                 .withIdentity("myjob", "grupo1")
                 .build();
-            
-            Trigger trigger = TriggerBuilder
+            trigger = TriggerBuilder
                 .newTrigger()
                 .withIdentity("meugatilho", "grupo1")
-                .withSchedule(CronScheduleBuilder.cronSchedule("0/10 * * * * ?"))
+                .withSchedule(CronScheduleBuilder.cronSchedule(agendamento))
 //                .withSchedule(CronScheduleBuilder.cronSchedule("0 01 11 ? * MON,TUE,WED,THU,FRI,SAT"))
                 .build();
             sched.scheduleJob(job, trigger);
-             
-            sched.deleteJob(job.getKey());
-            trigger = TriggerBuilder.newTrigger()
-            	.withIdentity("meugatilho", "grupo1")
- 	            .withSchedule(CronScheduleBuilder.cronSchedule("0/5 * * * * ?"))
- 	            .build();
-            sched.scheduleJob(job,trigger);
-            
         } catch (SchedulerException e) {
             System.out.println("erro");
             e.printStackTrace();
         }
 	}
-	public void pararProcesso(){
-		//
+	public void stopJob(){
+		 try {
+			sched.deleteJob(job.getKey());
+		} catch (SchedulerException e) {
+			e.printStackTrace();
+		}
 	}
-	public void pegarAgendamentoBD(){
-		//Agenda agenda = new Agenda();
-		//iniciarProcesso(agenda);
+	public String rescueSchedulingBD(){
+		ConfigDao configDao = new ConfigDao();
+		System.out.println("Lendo configurações de trabalho");
+		ConfigBean cb = configDao.readConfigurations();
+		System.out.println("Leitura realizada, tranferindo valores");
+		return cb.getSEGUNDO()+" "+cb.getMINUTO()+" "+cb.getHORA()+" "+
+				cb.getDIA_DO_MES()+" "+cb.getMES()+" "+cb.getDIA_DA_SEMANA();
+	}
+	public void startJob(){
+		String scheduling = rescueSchedulingBD();
+		initialize(scheduling);
+	}
+	public void restartJob(){
+		String scheduling = rescueSchedulingBD();
+		
+		trigger = TriggerBuilder.newTrigger()
+            	.withIdentity("meugatilho", "grupo1")
+ 	            .withSchedule(CronScheduleBuilder.cronSchedule(scheduling))
+ 	            .build();
+		try {
+			sched.scheduleJob(job,trigger);
+		} catch (SchedulerException e) {
+			e.printStackTrace();
+		}    
 	}
 	
 
