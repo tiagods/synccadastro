@@ -1,14 +1,9 @@
-package model;
+package teste;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -20,17 +15,17 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.NPOIFSFileSystem;
 import org.apache.poi.ss.usermodel.DateUtil;
 
-public class CadastroDao {
-	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-	long tempo;
+import model.CadastroBean;
+
+public class TestePlanilha {
+	static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	
-	public List<CadastroBean> readWorkbook(String caminho) throws IOException{
+	public static void main(String[] args) throws IOException{
 		
 		File file = new File("C:/Users/Tiago/Documents/Cadastro.xls");
 		Biff8EncryptionKey.setCurrentUserPassword("PLKCONTRATOS");
 		NPOIFSFileSystem fs = new NPOIFSFileSystem(file, true);
 		HSSFWorkbook workbook = new HSSFWorkbook(fs.getRoot(), true);
-		
 		Biff8EncryptionKey.setCurrentUserPassword(null);
 
 		HSSFSheet sheet = workbook.getSheetAt(0);
@@ -448,17 +443,11 @@ public class CadastroDao {
 			}
 			lista.add(bean);
 		}
-		try {
-			workbook.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		workbook.close();
 		long fim = System.currentTimeMillis();
-		tempo = fim - inicio;
-		//System.out.println("Tempo total: "+(fim-inicio)+"\nTamanho da Lista: "+lista.size());
-		return lista;
-	}
-	private String readingCell(HSSFCell celula){ //metodo usado para tratar as celulas
+		System.out.println("Tempo total: "+(fim-inicio)+"\nTamanho da Lista: "+lista.size());
+}
+	public static String readingCell(HSSFCell celula){ //metodo usado para tratar as celulas
 		switch (celula.getCellType()) {
 			case HSSFCell.CELL_TYPE_NUMERIC:
 				if(DateUtil.isCellDateFormatted(celula))
@@ -476,60 +465,4 @@ public class CadastroDao {
 				return "";
 		}
     }
-	@SuppressWarnings("resource")
-	public boolean copyWorkbook(ConfExtraBean cb){
-		FileInputStream local = null;
-		FileOutputStream destino= null;
-		FileChannel entrada=null;
-		FileChannel saida=null;
-		try{
-			local = new FileInputStream(cb.getPLANILHA_LOCALIZACAO()+"/"+cb.getPLANILHA_NOME());
-			destino = new FileOutputStream(cb.getDIRETORIO_TEMP()+"/"+cb.getPLANILHA_NOME());
-			entrada = local.getChannel();
-			saida = destino.getChannel();
-			entrada.transferTo(0, entrada.size(), saida);
-			return true;
-		}catch(IOException e){
-			e.printStackTrace();
-			return false;
-		}finally{
-				try {entrada.close();saida.close();
-				} catch (IOException e) {
-					return false;}
-		}
-		
-	}
-	
-	public boolean validateExtension(ConfExtraBean cb){
-		if(copyWorkbook(cb)){
-			File file = new File(cb.getDIRETORIO_TEMP()+"/"+cb.getPLANILHA_NOME());
-			int pos = file.toString().lastIndexOf(".");
-	        String extensao = file.toString().substring(pos + 1);
-	        if(!extensao.equals("xls")){
-		        return false;
-	        }
-		}
-		return false;
-	}
-	public void removeTempWorkbook(ConfExtraBean cb){
-		File[] files = new File(cb.getDIRETORIO_TEMP()).listFiles();
-		for(File f : files)
-			f.delete();
-	}
-	public void insertOrUpdate(List<CadastroBean> lista){
-		
-	}
-	public String  createTxtLogFile(File file, StringBuilder builder) throws IOException{
-		File f = new File(file.getAbsolutePath()+new Date()+".txt");
-		f.createNewFile();
-		FileWriter fWriter = new FileWriter(f, true);
-		fWriter.write(builder.toString());
-		fWriter.close();
-		return f.getAbsolutePath();
-	}
-	
-	//tempo de execuração do processo
-	public long getTempo(){
-		return this.tempo;
-	}
 }

@@ -5,14 +5,14 @@ import java.util.Date;
 public class CadastroBean {
 	private int COD;
 	private String STATUS="";
-	private Date COMPL_STS;
+	private String COMPL_STS;
 	private String ATENDIMENTO="";
 	private String PROCESSOS="";
 	private String SISTEMA="";
 	private String MP="";
 	private String TIPO="";
 	private String REGIME_TRIBUTARIO="";
-	private int QUANT_SOC_GER;
+	private String QUANT_SOC_GER;
 	private String EMPRESA="";
 	private String NOME="";
 	private String ENDERECO="";
@@ -21,29 +21,29 @@ public class CadastroBean {
 	private String EST="";
 	private String CEP="";
 	private String CNPJ="";
-	private Date DATA_CNPJ;
+	private String DATA_CNPJ;
 	private String IE="";
-	private Double VLR_CAPITAL;
+	private String VLR_CAPITAL;
 	private String VL_EXTENSO="";
-	private Double VL_COTA;
+	private String VL_COTA;
 	private String VL_EXT_COTA="";
-	private int COTAS_TOTAL;
+	private String COTAS_TOTAL;
 	private String COTAS_EXTENSO="";
 	private String PERC_CAP_1="";
 	private String PERC_CAP_2="";
 	private String PERC_CAP_DEMAIS="";
 	private String SOMA_PERC_CAP="";
-	private int COTAS_01;
-	private int COTAS_02;
+	private String COTAS_01;
+	private String COTAS_02;
 	private String PREF="";
-	private Date DATA_IM;
+	private String DATA_IM;
 	private String N_CONTRIB="";
 	private String ALIQUOTA_DE_ISS="";
-	private Date ENC_MUNIC;
-	private Date DT_DISTRATO;
+	private String ENC_MUNIC;
+	private String DT_DISTRATO;
 	private String NIRC="";
 	private String N_REG_CART_OU_NIRE="";
-	private Date DATA_REG_CART_OU_JUCESP;
+	private String DATA_REG_CART_OU_JUCESP;
 	private String SIND_CNPJ="";
 	private String ATIVIDADE="";
 	private String SINDICATO="";
@@ -55,7 +55,7 @@ public class CadastroBean {
 	private String DIG_CNAE="";
 	private String FPAS="";
 	private String QUANT_SOCIOS="";
-	private Date DATA_INSS;
+	private String DATA_INSS;
 	private String CONSULTORIA_INICIO="";
 	private String ALOCADO="";
 	private String INDICADO="";
@@ -73,9 +73,9 @@ public class CadastroBean {
 	private String EST_CIVEL_01="";
 	private String MAIOR_EMANCIPADO_1="";
 	private String PROF_01="";
-	private int DIA_NASC1;
+	private String DIA_NASC1;
 	private String MES_NASC1="";
-	private int ANO_NASC1;
+	private String ANO_NASC1;
 	private String PIS_SOC1="";
 	private String END_SOC_1="";
 	private String BAIRRO1="";
@@ -85,7 +85,7 @@ public class CadastroBean {
 	private String RG1="";
 	private String ORGAO1="";
 	private String ESTD1="";
-	private Date DATA_EXP1;
+	private String DATA_EXP1;
 	private String CPF1="";
 	private String EMAIL_SOC_1="";
 	private String EMAIL_FINANCEIRO="";
@@ -112,14 +112,14 @@ public class CadastroBean {
 	private String CIDADE2="";
 	private String EST2="";
 	private String CEP2="";
-	private int DIA_NASC2;
+	private String DIA_NASC2;
 	private String MES_NASC2="";
-	private int ANO_NASC2;
+	private String ANO_NASC2;
 	private String PIS_SOC2="";
 	private String RG2="";
 	private String ORGAO2="";
 	private String ESTD2="";
-	private Date DATA_EXP2;
+	private String DATA_EXP2;
 	private String CPF2="";
 	private String DDD2RES="";
 	private String FONERES2="";
@@ -142,10 +142,10 @@ public class CadastroBean {
 	public void setSTATUS(String sTATUS) {
 		STATUS = sTATUS;
 	}
-	public Date getCOMPL_STS() {
+	public String getCOMPL_STS() {
 		return COMPL_STS;
 	}
-	public void setCOMPL_STS(Date cOMPL_STS) {
+	public void setCOMPL_STS(String cOMPL_STS) {
 		COMPL_STS = cOMPL_STS;
 	}
 	public String getATENDIMENTO() {
@@ -184,10 +184,10 @@ public class CadastroBean {
 	public void setREGIME_TRIBUTARIO(String rEGIME_TRIBUTARIO) {
 		REGIME_TRIBUTARIO = rEGIME_TRIBUTARIO;
 	}
-	public int getQUANT_SOC_GER() {
+	public String getQUANT_SOC_GER() {
 		return QUANT_SOC_GER;
 	}
-	public void setQUANT_SOC_GER(int qUANT_SOC_GER) {
+	public void setQUANT_SOC_GER(String qUANT_SOC_GER) {
 		QUANT_SOC_GER = qUANT_SOC_GER;
 	}
 	public String getEMPRESA() {
@@ -238,10 +238,10 @@ public class CadastroBean {
 	public void setCNPJ(String cNPJ) {
 		CNPJ = cNPJ;
 	}
-	public Date getDATA_CNPJ() {
+	public String getDATA_CNPJ() {
 		return DATA_CNPJ;
 	}
-	public void setDATA_CNPJ(Date dATA_CNPJ) {
+	public void setDATA_CNPJ(String dATA_CNPJ) {
 		DATA_CNPJ = dATA_CNPJ;
 	}
 	public String getIE() {
@@ -250,10 +250,10 @@ public class CadastroBean {
 	public void setIE(String iE) {
 		IE = iE;
 	}
-	public Double getVLR_CAPITAL() {
+	public String getVLR_CAPITAL() {
 		return VLR_CAPITAL;
 	}
-	public void setVLR_CAPITAL(Double vLR_CAPITAL) {
+	public void setVLR_CAPITAL(String vLR_CAPITAL) {
 		VLR_CAPITAL = vLR_CAPITAL;
 	}
 	public String getVL_EXTENSO() {
@@ -262,10 +262,10 @@ public class CadastroBean {
 	public void setVL_EXTENSO(String vL_EXTENSO) {
 		VL_EXTENSO = vL_EXTENSO;
 	}
-	public Double getVL_COTA() {
+	public String getVL_COTA() {
 		return VL_COTA;
 	}
-	public void setVL_COTA(Double vL_COTA) {
+	public void setVL_COTA(String vL_COTA) {
 		VL_COTA = vL_COTA;
 	}
 	public String getVL_EXT_COTA() {
@@ -274,10 +274,10 @@ public class CadastroBean {
 	public void setVL_EXT_COTA(String vL_EXT_COTA) {
 		VL_EXT_COTA = vL_EXT_COTA;
 	}
-	public int getCOTAS_TOTAL() {
+	public String getCOTAS_TOTAL() {
 		return COTAS_TOTAL;
 	}
-	public void setCOTAS_TOTAL(int cOTAS_TOTAL) {
+	public void setCOTAS_TOTAL(String cOTAS_TOTAL) {
 		COTAS_TOTAL = cOTAS_TOTAL;
 	}
 	public String getCOTAS_EXTENSO() {
@@ -310,16 +310,16 @@ public class CadastroBean {
 	public void setSOMA_PERC_CAP(String sOMA_PERC_CAP) {
 		SOMA_PERC_CAP = sOMA_PERC_CAP;
 	}
-	public int getCOTAS_01() {
+	public String getCOTAS_01() {
 		return COTAS_01;
 	}
-	public void setCOTAS_01(int cOTAS_01) {
+	public void setCOTAS_01(String cOTAS_01) {
 		COTAS_01 = cOTAS_01;
 	}
-	public int getCOTAS_02() {
+	public String getCOTAS_02() {
 		return COTAS_02;
 	}
-	public void setCOTAS_02(int cOTAS_02) {
+	public void setCOTAS_02(String cOTAS_02) {
 		COTAS_02 = cOTAS_02;
 	}
 	public String getPREF() {
@@ -328,10 +328,10 @@ public class CadastroBean {
 	public void setPREF(String pREF) {
 		PREF = pREF;
 	}
-	public Date getDATA_IM() {
+	public String getDATA_IM() {
 		return DATA_IM;
 	}
-	public void setDATA_IM(Date dATA_IM) {
+	public void setDATA_IM(String dATA_IM) {
 		DATA_IM = dATA_IM;
 	}
 	public String getN_CONTRIB() {
@@ -346,16 +346,16 @@ public class CadastroBean {
 	public void setALIQUOTA_DE_ISS(String aLIQUOTA_DE_ISS) {
 		ALIQUOTA_DE_ISS = aLIQUOTA_DE_ISS;
 	}
-	public Date getENC_MUNIC() {
+	public String getENC_MUNIC() {
 		return ENC_MUNIC;
 	}
-	public void setENC_MUNIC(Date eNC_MUNIC) {
+	public void setENC_MUNIC(String eNC_MUNIC) {
 		ENC_MUNIC = eNC_MUNIC;
 	}
-	public Date getDT_DISTRATO() {
+	public String getDT_DISTRATO() {
 		return DT_DISTRATO;
 	}
-	public void setDT_DISTRATO(Date dT_DISTRATO) {
+	public void setDT_DISTRATO(String dT_DISTRATO) {
 		DT_DISTRATO = dT_DISTRATO;
 	}
 	public String getNIRC() {
@@ -370,10 +370,10 @@ public class CadastroBean {
 	public void setN_REG_CART_OU_NIRE(String n_REG_CART_OU_NIRE) {
 		N_REG_CART_OU_NIRE = n_REG_CART_OU_NIRE;
 	}
-	public Date getDATA_REG_CART_OU_JUCESP() {
+	public String getDATA_REG_CART_OU_JUCESP() {
 		return DATA_REG_CART_OU_JUCESP;
 	}
-	public void setDATA_REG_CART_OU_JUCESP(Date dATA_REG_CART_OU_JUCESP) {
+	public void setDATA_REG_CART_OU_JUCESP(String dATA_REG_CART_OU_JUCESP) {
 		DATA_REG_CART_OU_JUCESP = dATA_REG_CART_OU_JUCESP;
 	}
 	public String getSIND_CNPJ() {
@@ -442,10 +442,10 @@ public class CadastroBean {
 	public void setQUANT_SOCIOS(String qUANT_SOCIOS) {
 		QUANT_SOCIOS = qUANT_SOCIOS;
 	}
-	public Date getDATA_INSS() {
+	public String getDATA_INSS() {
 		return DATA_INSS;
 	}
-	public void setDATA_INSS(Date dATA_INSS) {
+	public void setDATA_INSS(String dATA_INSS) {
 		DATA_INSS = dATA_INSS;
 	}
 	public String getCONSULTORIA_INICIO() {
@@ -550,10 +550,10 @@ public class CadastroBean {
 	public void setPROF_01(String pROF_01) {
 		PROF_01 = pROF_01;
 	}
-	public int getDIA_NASC1() {
+	public String getDIA_NASC1() {
 		return DIA_NASC1;
 	}
-	public void setDIA_NASC1(int dIA_NASC1) {
+	public void setDIA_NASC1(String dIA_NASC1) {
 		DIA_NASC1 = dIA_NASC1;
 	}
 	public String getMES_NASC1() {
@@ -562,10 +562,10 @@ public class CadastroBean {
 	public void setMES_NASC1(String mES_NASC1) {
 		MES_NASC1 = mES_NASC1;
 	}
-	public int getANO_NASC1() {
+	public String getANO_NASC1() {
 		return ANO_NASC1;
 	}
-	public void setANO_NASC1(int aNO_NASC1) {
+	public void setANO_NASC1(String aNO_NASC1) {
 		ANO_NASC1 = aNO_NASC1;
 	}
 	public String getPIS_SOC1() {
@@ -622,10 +622,10 @@ public class CadastroBean {
 	public void setESTD1(String eSTD1) {
 		ESTD1 = eSTD1;
 	}
-	public Date getDATA_EXP1() {
+	public String getDATA_EXP1() {
 		return DATA_EXP1;
 	}
-	public void setDATA_EXP1(Date dATA_EXP1) {
+	public void setDATA_EXP1(String dATA_EXP1) {
 		DATA_EXP1 = dATA_EXP1;
 	}
 	public String getCPF1() {
@@ -784,10 +784,10 @@ public class CadastroBean {
 	public void setCEP2(String cEP2) {
 		CEP2 = cEP2;
 	}
-	public int getDIA_NASC2() {
+	public String getDIA_NASC2() {
 		return DIA_NASC2;
 	}
-	public void setDIA_NASC2(int dIA_NASC2) {
+	public void setDIA_NASC2(String dIA_NASC2) {
 		DIA_NASC2 = dIA_NASC2;
 	}
 	public String getMES_NASC2() {
@@ -796,10 +796,10 @@ public class CadastroBean {
 	public void setMES_NASC2(String mES_NASC2) {
 		MES_NASC2 = mES_NASC2;
 	}
-	public int getANO_NASC2() {
+	public String getANO_NASC2() {
 		return ANO_NASC2;
 	}
-	public void setANO_NASC2(int aNO_NASC2) {
+	public void setANO_NASC2(String aNO_NASC2) {
 		ANO_NASC2 = aNO_NASC2;
 	}
 	public String getPIS_SOC2() {
@@ -826,10 +826,10 @@ public class CadastroBean {
 	public void setESTD2(String eSTD2) {
 		ESTD2 = eSTD2;
 	}
-	public Date getDATA_EXP2() {
+	public String getDATA_EXP2() {
 		return DATA_EXP2;
 	}
-	public void setDATA_EXP2(Date dATA_EXP2) {
+	public void setDATA_EXP2(String dATA_EXP2) {
 		DATA_EXP2 = dATA_EXP2;
 	}
 	public String getCPF2() {

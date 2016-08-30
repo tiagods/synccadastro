@@ -1,9 +1,11 @@
-package factory;
+package teste;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import factory.ConnectionFactory;
 
 public class TesteConexao {
 	public static void main(String[] args) throws SQLException{

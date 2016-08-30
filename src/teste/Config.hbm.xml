@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="ConfigBean" table="CONFIG">
+    <id column="CODIGO" name="CODIGO" type="int">
+      <generator class="auto" />
+    </id>
+    <property name="SEGUNDO"/>
+    <property name="MINUTO"/>
+    <property name="HORA"/>
+    <property name="DIA_DO_MES"/>
+    <property name="MES"/>
+    <property name="DIA_DA_SEMANA"/>
+  </class>
+</hibernate-mapping>
