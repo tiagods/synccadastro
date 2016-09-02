@@ -28,7 +28,6 @@ public class ControllerCadastro {
 		return instance;
 	}
 	public void initialize(String agendamento){
-
 		try {
             schedFact = new StdSchedulerFactory();
             Scheduler sched = schedFact.getScheduler();
@@ -40,6 +39,7 @@ public class ControllerCadastro {
                 .newTrigger()
                 .withIdentity("meugatilho", "grupo1")
                 .withSchedule(CronScheduleBuilder.cronSchedule(agendamento))
+//               "0/20 * * * * ?"
 //                .withSchedule(CronScheduleBuilder.cronSchedule("0 01 11 ? * MON,TUE,WED,THU,FRI,SAT"))
                 .build();
             sched.scheduleJob(job, trigger);
@@ -59,26 +59,38 @@ public class ControllerCadastro {
 		ConfigDao configDao = new ConfigDao();
 		System.out.println("Lendo configurações de trabalho");
 		ConfigBean cb = configDao.readConfigurations();
-		System.out.println("Leitura realizada, tranferindo valores");
-		return cb.getSEGUNDO()+" "+cb.getMINUTO()+" "+cb.getHORA()+" "+
-				cb.getDIA_DO_MES()+" "+cb.getMES()+" "+cb.getDIA_DA_SEMANA();
+		if(cb!=null){
+			
+			System.out.println("Leitura realizada, tranferindo valores + ");
+			return cb.getSEGUNDO()+" "+cb.getMINUTO()+" "+cb.getHORA()+" "+
+					cb.getDIA_DO_MES()+" "+cb.getMES()+" "+cb.getDIA_DA_SEMANA();
+		}
+		else
+			return null;
 	}
 	public void startJob(){
 		String scheduling = rescueSchedulingBD();
-		initialize(scheduling);
+		if(scheduling!=null)
+			initialize(scheduling);
+		else
+			System.out.println("Não foi possivel receber os paramentros de trabalho!");
 	}
 	public void restartJob(){
 		String scheduling = rescueSchedulingBD();
-		
-		trigger = TriggerBuilder.newTrigger()
-            	.withIdentity("meugatilho", "grupo1")
- 	            .withSchedule(CronScheduleBuilder.cronSchedule(scheduling))
- 	            .build();
-		try {
-			sched.scheduleJob(job,trigger);
-		} catch (SchedulerException e) {
-			e.printStackTrace();
-		}    
+		if(scheduling != null){
+			trigger = TriggerBuilder.newTrigger()
+	            	.withIdentity("meugatilho", "grupo1")
+	 	            .withSchedule(CronScheduleBuilder.cronSchedule(scheduling))
+	 	            .build();
+			
+			try {
+				sched.scheduleJob(job,trigger);
+			} catch (SchedulerException e) {
+				e.printStackTrace();
+			}    
+		}
+		else
+			System.out.println("Não foi possivel receber os paramentros de trabalho!");
 	}
 	
 

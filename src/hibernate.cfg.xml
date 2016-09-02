@@ -7,6 +7,6 @@
 
 <hibernate-configuration>
     <session-factory>
-        <mapping resource="teste/Config.hbm.xml"/>
+        <mapping resource="model/Config.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

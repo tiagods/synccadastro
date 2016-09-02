@@ -1,8 +1,6 @@
 package teste;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.JOptionPane;
 
@@ -15,19 +13,17 @@ import model.ConfigBean;
 public class TesteHibernate {
 	public static void main(String[] args){
 		try{
-            SessionFactory fabrica = new Configuration()
+			SessionFactory fabrica = new Configuration()
             		.configure()
-                    .buildSessionFactory();
+            		.buildSessionFactory();
             Session sessao = fabrica.openSession();
 
-            List<ConfigBean> listar = new ArrayList();
-            listar = sessao.createQuery("from ConfigBean").getResultList();
+            List<ConfigBean> listar = sessao.createQuery("from ConfigBean").list();
             
-            for(int i=0; i<listar.size(); i++){
-            	ConfigBean conf = listar.get(i);
-                System.out.println(conf.getCODIGO()+"-"+conf.getSEGUNDO()+"-"
-                +conf.getMINUTO()+"-"+conf.getHORA()+"-"+conf.getMES());
-            }
+            listar.forEach(c->{
+            	System.out.println(c.getCODIGO()+"-"+c.getSEGUNDO()+"-"
+                +c.getMINUTO()+"-"+c.getHORA()+"-"+c.getMES()+"-"+c.getDIA_DA_SEMANA());
+            });
             sessao.close();
         }catch(Exception e){
             JOptionPane.showMessageDialog(null,"Erro ao listar: "+e);

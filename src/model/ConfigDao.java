@@ -1,17 +1,20 @@
 package model;
 
+import java.util.List;
+import java.util.function.Consumer;
+
+import org.hibernate.Session;
+
+import factory.HibernateFactory;
+
 public class ConfigDao {
 
 	public ConfigBean readConfigurations(){
-		ConfigBean cb = new ConfigBean();
-		cb.setCODIGO(new Integer(1));
-		cb.setSEGUNDO("");
-		cb.setMINUTO("");
-		cb.setHORA("");
-		cb.setDIA_DO_MES("");
-		cb.setMES("");
-		cb.setDIA_DA_SEMANA("");
-		return cb;
+		HibernateFactory factory = new HibernateFactory();
+		Session session = factory.getSession();
+		List<Object> object = factory.getList(session, ConfigBean.class);
+		int last = object.size() - 1; 
+		return (ConfigBean)object.get(last);
 	}
 
 }
