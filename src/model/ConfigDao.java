@@ -1,7 +1,6 @@
 package model;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 import org.hibernate.Session;
 

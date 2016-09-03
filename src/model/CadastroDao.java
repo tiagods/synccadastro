@@ -18,7 +18,9 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.NPOIFSFileSystem;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.Row;
 
 public class CadastroDao {
 	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -28,6 +30,7 @@ public class CadastroDao {
 		
 		File file = new File("C:/Users/Tiago/Documents/Cadastro.xls");
 		Biff8EncryptionKey.setCurrentUserPassword("PLKCONTRATOS");
+		@SuppressWarnings("resource")
 		NPOIFSFileSystem fs = new NPOIFSFileSystem(file, true);
 		HSSFWorkbook workbook = new HSSFWorkbook(fs.getRoot(), true);
 		
@@ -40,7 +43,7 @@ public class CadastroDao {
 		
 		List<CadastroBean> lista = new ArrayList<CadastroBean>();
 		
-		Iterator linha = sheet.rowIterator();
+		Iterator<Row> linha = sheet.rowIterator();
 		boolean stop = false;//parar cas
 		
 		while(linha.hasNext()){
@@ -49,7 +52,7 @@ public class CadastroDao {
 			if(row==null) break;
 			if(row.getRowNum()==0) continue;//pular 1ª linha
 			CadastroBean bean = new CadastroBean();
-			Iterator columns = row.cellIterator();
+			Iterator<Cell> columns = row.cellIterator();
 			while(columns.hasNext()){
 				HSSFCell celula = (HSSFCell)columns.next();
 				if(row.getRowNum()!=0 && celula.getColumnIndex()==0){

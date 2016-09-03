@@ -1,8 +1,11 @@
 package model;
 
-import java.util.Date;
+import java.io.Serializable;
 
-public class CadastroBean {
+public class CadastroBean{
+	/**
+	 * 
+	 */
 	private int COD;
 	private String STATUS="";
 	private String COMPL_STS;

@@ -69,5 +69,10 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
 		<artifactId>sqljdbc4</artifactId>
 		<version>4.2</version>
 	</dependency>
+	<dependency>
+	    <groupId>mysql</groupId>
+	    <artifactId>mysql-connector-java</artifactId>
+	    <version>6.0.3</version>
+	</dependency>
   </dependencies>
 </project>
