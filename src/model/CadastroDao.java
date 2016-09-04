@@ -32,35 +32,37 @@ public class CadastroDao {
 	public List<CadastroBean> readWorkbook(String caminho) throws IOException{
 		
 		File file = new File(caminho);
-		Biff8EncryptionKey.setCurrentUserPassword("PLKCONTRATOS");
+		//informando a senha de descriptografia
+Biff8EncryptionKey.setCurrentUserPassword("PLKCONTRATOS");
 		@SuppressWarnings("resource")
 		NPOIFSFileSystem fs = new NPOIFSFileSystem(file, true);
 		HSSFWorkbook workbook = new HSSFWorkbook(fs.getRoot(), true);
-		
+		//removendo senha para leitura
 		Biff8EncryptionKey.setCurrentUserPassword(null);
 
 		HSSFSheet sheet = workbook.getSheetAt(0);
 		
-		System.out.println("Iniciando a leitura da planilha XLS:");
 		long inicio = System.currentTimeMillis();
 		
 		List<CadastroBean> lista = new ArrayList<CadastroBean>();
-		
+		//pegando linhas e jogando no iterator
+
 		Iterator<Row> linha = sheet.rowIterator();
 		boolean stop = false;//parar cas
 		
 		while(linha.hasNext()){
-			if(stop) break;
+			if(stop) break;//parar caso codigo seja vazio ou 0
 			HSSFRow row = (HSSFRow)linha.next();
 			if(row==null) break;
-			if(row.getRowNum()==0) continue;//pular 1ª linha
+			if(row.getRowNum()==0) continue;//pular a 1a linha
 			CadastroBean bean = new CadastroBean();
+//iterando sobre as colunas da linha
 			Iterator<Cell> columns = row.cellIterator();
 			while(columns.hasNext()){
 				HSSFCell celula = (HSSFCell)columns.next();
 				if(row.getRowNum()!=0 && celula.getColumnIndex()==0){
 					try{
-						Integer.parseInt(readingCell(celula).trim());//se não conseguir o cast, o campo codigo estara em branco, nesse caso o for ira fechar
+						Integer.parseInt(readingCell(celula).trim());//se nÄƒo conseguir o cast, o campo codigo estara em branco, nesse caso o for ira fechar
 					}catch(NumberFormatException e){
 						stop=true;
 						break;
@@ -461,7 +463,7 @@ public class CadastroDao {
 		}
 		long fim = System.currentTimeMillis();
 		tempo = fim - inicio;
-		//System.out.println("Tempo total: "+(fim-inicio)+"\nTamanho da Lista: "+lista.size());
+		System.out.println("Tempo total: "+(fim-inicio)+"\nTamanho da Lista: "+lista.size());
 		return lista;
 	}
 	private String readingCell(HSSFCell celula){ //metodo usado para tratar as celulas
@@ -484,6 +486,7 @@ public class CadastroDao {
     }
 	@SuppressWarnings("resource")
 	public boolean copyWorkbook(ConfExtraBean cb){
+//copiando arquivo para um local temporario
 		FileInputStream local = null;
 		FileOutputStream destino= null;
 		FileChannel entrada=null;
@@ -505,7 +508,7 @@ public class CadastroDao {
 		}
 		
 	}
-	
+	//validando extensao xls do arquivo
 	public boolean validateExtension(ConfExtraBean cb){
 		if(copyWorkbook(cb)){
 			File file = new File(cb.getDIRETORIO_TEMP()+"/"+cb.getPLANILHA_NOME());
@@ -517,11 +520,15 @@ public class CadastroDao {
 		}
 		return false;
 	}
+//deletar arquivo temporario
+
 	public void removeTempWorkbook(ConfExtraBean cb){
 		File[] files = new File(cb.getDIRETORIO_TEMP()).listFiles();
 		for(File f : files)
 			f.delete();
 	}
+
+//atualizando dados
 	public String insertOrUpdate(List<CadastroBean> lista){
 		HibernateFactory factory = new HibernateFactory();
 		Session session = factory.getSession();
@@ -535,6 +542,7 @@ public class CadastroDao {
 		factory.closeSession(session);
 		return builder.toString();
 	}
+//criar um arquivo de log
 	public String  createTxtLogFile(File file, StringBuilder builder) throws IOException{
 		File f = new File(file.getAbsolutePath()+"/"+new Date()+".txt");
 		f.createNewFile();
@@ -544,7 +552,7 @@ public class CadastroDao {
 		return f.getAbsolutePath();
 	}
 	
-	//tempo de execuração do processo
+	//tempo de execuraÃ§Äƒo do processo
 	public long getTempo(){
 		return this.tempo;
 	}
