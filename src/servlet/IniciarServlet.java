@@ -19,11 +19,15 @@ public class IniciarServlet extends HttpServlet {
 		super.init(config);
 		System.out.println("Requisição realizada");
 		ControllerJob controller = ControllerJob.getInstance();
-//		controller.startJob();
+		controller.startJob();
 	}
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		ControllerJob controller = ControllerJob.getInstance();
+		controller.stopJob();
+		//salvar novo parametro de configuração
+		controller.restartJob();
 	}
 
 }

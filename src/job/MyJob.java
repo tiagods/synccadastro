@@ -17,7 +17,6 @@ public class MyJob implements Job {
 
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
-		
 		System.out.println("Classe job foi invocada!");
 		
 		ConfExtraDao cextraDao = new ConfExtraDao();
@@ -49,11 +48,9 @@ public class MyJob implements Job {
 						file.mkdir();
 						cadastro.createTxtLogFile(file, builder);
 				}catch(IOException e){
-					builder.append("Falha ao gravar o arquivo txt: "+e.getMessage());
-					builder.append(quebra);
+					System.out.println("Falha ao gravar o arquivo txt: "+e.getMessage());;
 				}
 			}
 			}
-		}
-
+	}
 }
