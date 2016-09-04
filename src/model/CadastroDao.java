@@ -21,6 +21,9 @@ import org.apache.poi.poifs.filesystem.NPOIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
+import org.hibernate.Session;
+
+import factory.HibernateFactory;
 
 public class CadastroDao {
 	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -28,7 +31,7 @@ public class CadastroDao {
 	
 	public List<CadastroBean> readWorkbook(String caminho) throws IOException{
 		
-		File file = new File("C:/Users/Tiago/Documents/Cadastro.xls");
+		File file = new File(caminho);
 		Biff8EncryptionKey.setCurrentUserPassword("PLKCONTRATOS");
 		@SuppressWarnings("resource")
 		NPOIFSFileSystem fs = new NPOIFSFileSystem(file, true);
@@ -508,8 +511,8 @@ public class CadastroDao {
 			File file = new File(cb.getDIRETORIO_TEMP()+"/"+cb.getPLANILHA_NOME());
 			int pos = file.toString().lastIndexOf(".");
 	        String extensao = file.toString().substring(pos + 1);
-	        if(!extensao.equals("xls")){
-		        return false;
+	        if(extensao.equals("xls")){
+		        return true;
 	        }
 		}
 		return false;
@@ -519,11 +522,21 @@ public class CadastroDao {
 		for(File f : files)
 			f.delete();
 	}
-	public void insertOrUpdate(List<CadastroBean> lista){
-		
+	public String insertOrUpdate(List<CadastroBean> lista){
+		HibernateFactory factory = new HibernateFactory();
+		Session session = factory.getSession();
+		StringBuilder builder = new StringBuilder();
+		lista.forEach(c->{
+			if(c.getCOD()!=0){
+				builder.append(factory.saveOrUpdateSession(session, c));
+				builder.append(System.getProperty("line.separator"));
+			}
+		});
+		factory.closeSession(session);
+		return builder.toString();
 	}
 	public String  createTxtLogFile(File file, StringBuilder builder) throws IOException{
-		File f = new File(file.getAbsolutePath()+new Date()+".txt");
+		File f = new File(file.getAbsolutePath()+"/"+new Date()+".txt");
 		f.createNewFile();
 		FileWriter fWriter = new FileWriter(f, true);
 		fWriter.write(builder.toString());

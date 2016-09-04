@@ -2,7 +2,7 @@ package model;
 
 import java.io.Serializable;
 
-public class CadastroBean{
+public class CadastroBean implements Serializable{
 	/**
 	 * 
 	 */

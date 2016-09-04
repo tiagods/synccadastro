@@ -29,6 +29,7 @@ public class ControllerCadastro {
 	}
 	public void initialize(String agendamento){
 		try {
+			System.out.println("Agendamento criado");
             schedFact = new StdSchedulerFactory();
             Scheduler sched = schedFact.getScheduler();
             sched.start();
@@ -60,6 +61,8 @@ public class ControllerCadastro {
 		System.out.println("Lendo configurações de trabalho");
 		ConfigBean cb = configDao.readConfigurations();
 		if(cb!=null){
+			System.out.println(cb.getSEGUNDO()+" "+cb.getMINUTO()+" "+cb.getHORA()+" "+
+					cb.getDIA_DO_MES()+" "+cb.getMES()+" "+cb.getDIA_DA_SEMANA());
 			
 			System.out.println("Leitura realizada, tranferindo valores + ");
 			return cb.getSEGUNDO()+" "+cb.getMINUTO()+" "+cb.getHORA()+" "+

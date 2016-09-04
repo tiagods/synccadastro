@@ -8,5 +8,7 @@
 <hibernate-configuration>
     <session-factory>
         <mapping resource="model/Config.hbm.xml"/>
+        <mapping resource="model/ConfigExtra.hbm.xml"/>
+        <mapping resource="model/Cadastro.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>
