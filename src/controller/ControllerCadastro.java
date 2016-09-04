@@ -27,6 +27,7 @@ public class ControllerCadastro {
 		}
 		return instance;
 	}
+//inicializando agendamento
 	public void initialize(String agendamento){
 		try {
 			System.out.println("Agendamento criado");
@@ -49,6 +50,7 @@ public class ControllerCadastro {
             e.printStackTrace();
         }
 	}
+//removendo tarefa
 	public void stopJob(){
 		 try {
 			sched.deleteJob(job.getKey());
@@ -56,28 +58,30 @@ public class ControllerCadastro {
 			e.printStackTrace();
 		}
 	}
+//pegando configuracao do banco de dados
 	public String rescueSchedulingBD(){
 		ConfigDao configDao = new ConfigDao();
-		System.out.println("Lendo configurações de trabalho");
+		System.out.println("Lendo configuraÃ§Ãµes de trabalho");
 		ConfigBean cb = configDao.readConfigurations();
 		if(cb!=null){
 			System.out.println(cb.getSEGUNDO()+" "+cb.getMINUTO()+" "+cb.getHORA()+" "+
 					cb.getDIA_DO_MES()+" "+cb.getMES()+" "+cb.getDIA_DA_SEMANA());
 			
-			System.out.println("Leitura realizada, tranferindo valores + ");
 			return cb.getSEGUNDO()+" "+cb.getMINUTO()+" "+cb.getHORA()+" "+
 					cb.getDIA_DO_MES()+" "+cb.getMES()+" "+cb.getDIA_DA_SEMANA();
 		}
 		else
 			return null;
 	}
+//iniciando job
 	public void startJob(){
 		String scheduling = rescueSchedulingBD();
 		if(scheduling!=null)
 			initialize(scheduling);
 		else
-			System.out.println("Não foi possivel receber os paramentros de trabalho!");
+			System.out.println("NÃ£o foi possivel receber os paramentros de trabalho!");
 	}
+//reiniciando job
 	public void restartJob(){
 		String scheduling = rescueSchedulingBD();
 		if(scheduling != null){
@@ -93,7 +97,7 @@ public class ControllerCadastro {
 			}    
 		}
 		else
-			System.out.println("Não foi possivel receber os paramentros de trabalho!");
+			System.out.println("NÃ£o foi possivel receber os paramentros de trabalho!");
 	}
 	
 
