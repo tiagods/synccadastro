@@ -8,7 +8,7 @@
 </head>
 <body>
 	<div>
-		<form method="post" action="">
+		<form method="GET" action="Iniciar">
 			<table align="center">
 				<tr>
 					<td colspan="2">
@@ -20,7 +20,7 @@
 						Usuario:
 					</td>
 					<td>
-						<input type="text" size="10">
+						<input type="text" name="user" size="10">
 					</td>	
 				</tr>
 				<tr>
@@ -28,7 +28,7 @@
 						Senha:
 					</td>
 					<td>
-						<input type="password" size="10" name="senha">
+						<input type="password" name="password" size="10">
 					</td>
 				</tr>
 				<tr>

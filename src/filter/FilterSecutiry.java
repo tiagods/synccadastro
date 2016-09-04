@@ -16,11 +16,8 @@ import javax.servlet.http.HttpSession;
 /**
  * Servlet Filter implementation class FilterSecutiry
  */
-@WebFilter("/security/*")
+@WebFilter("/front/*")
 public class FilterSecutiry implements Filter {
-
-    public FilterSecutiry() {
-    }
 
 	public void destroy() {
 	}

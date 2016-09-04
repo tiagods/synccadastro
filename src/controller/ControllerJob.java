@@ -14,16 +14,16 @@ import job.MyJob;
 import model.ConfigBean;
 import model.ConfigDao;
 
-public class ControllerCadastro {
+public class ControllerJob {
 	private SchedulerFactory schedFact;
 	private Scheduler sched;
 	private JobDetail job;
 	private Trigger trigger;
-	public static ControllerCadastro instance;
+	public static ControllerJob instance;
 	
-	public static ControllerCadastro getInstance(){
+	public static ControllerJob getInstance(){
 		if(instance==null){
-			instance=new ControllerCadastro();
+			instance=new ControllerJob();
 		}
 		return instance;
 	}

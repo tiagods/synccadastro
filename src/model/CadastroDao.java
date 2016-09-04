@@ -28,6 +28,15 @@ import factory.HibernateFactory;
 public class CadastroDao {
 	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	long tempo;
+	static CadastroDao instance;
+	
+	public static CadastroDao getInstance(){
+		
+		if(instance==null){
+			instance = new CadastroDao();
+		}
+		return instance;
+	}
 	
 	public List<CadastroBean> readWorkbook(String caminho) throws IOException{
 		
@@ -534,6 +543,13 @@ public class CadastroDao {
 		});
 		factory.closeSession(session);
 		return builder.toString();
+	}
+	public List<CadastroBean> readClients(){
+		HibernateFactory factory = new HibernateFactory();
+		Session session = factory.getSession();
+		List object = factory.getList(session, "CadastroBean");
+		factory.closeSession(session);
+		return (List<CadastroBean>)object;
 	}
 	public String  createTxtLogFile(File file, StringBuilder builder) throws IOException{
 		File f = new File(file.getAbsolutePath()+"/"+new Date()+".txt");
