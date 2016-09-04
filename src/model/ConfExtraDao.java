@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import factory.HibernateFactory;
 
 public class ConfExtraDao {
+//realizando consulta e retornando o ultimo objeto
 	public ConfExtraBean readConfigurations(){
 		HibernateFactory factory = new HibernateFactory();
 		Session session = factory.getSession();
