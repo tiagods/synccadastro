@@ -9,18 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.quartz.CronScheduleBuilder;
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.SchedulerFactory;
-import org.quartz.Trigger;
-import org.quartz.TriggerBuilder;
-import org.quartz.impl.StdSchedulerFactory;
-
 import controller.ControllerCadastro;
-import job.MyJob;
 
 @WebServlet(value="/security/Iniciar",loadOnStartup=1)
 public class IniciarServlet extends HttpServlet {
@@ -28,7 +17,7 @@ public class IniciarServlet extends HttpServlet {
        
 	public void init(ServletConfig config) throws ServletException{
 		super.init(config);
-		System.out.println("Requisição realizada");
+		//chamando a instancia que gerencia as tarefas agendadas
 		ControllerCadastro controller = ControllerCadastro.getInstance();
 		controller.startJob();
 	}
