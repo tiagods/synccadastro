@@ -7,10 +7,8 @@ import org.hibernate.Session;
 import factory.HibernateFactory;
 
 public class ConfigDao {
+//realizando consulta e retornando o ultimo objeto
 
-	public static void main(String[] args){
-		new ConfigDao();
-	}
 	public ConfigBean readConfigurations(){
 		HibernateFactory factory = new HibernateFactory();
 		Session session = factory.getSession();

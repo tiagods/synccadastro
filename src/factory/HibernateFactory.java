@@ -19,7 +19,8 @@ public class HibernateFactory {
 	public List<Object> getList(Session session, Object object){
 		return session.createQuery("from "+object).list();
 	}
-	
+	//retornando apenas 1 objeto
+
 	public Object getObject(Session session, Object object){
 		return session.createQuery("from "+object).getFirstResult();
 	}

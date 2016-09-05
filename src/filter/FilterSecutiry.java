@@ -21,6 +21,7 @@ public class FilterSecutiry implements Filter {
 
 	public void destroy() {
 	}
+//desabilitando acesso nao permitido
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;

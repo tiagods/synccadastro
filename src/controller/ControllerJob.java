@@ -27,7 +27,11 @@ public class ControllerJob {
 		}
 		return instance;
 	}
+<<<<<<< HEAD:src/controller/ControllerJob.java
 	//inicialização do agendamento
+=======
+//inicializando agendamento
+>>>>>>> refs/remotes/origin/master:src/controller/ControllerCadastro.java
 	public void initialize(String agendamento){
 		try {
 			System.out.println("Agendamento criado");
@@ -50,7 +54,11 @@ public class ControllerJob {
             e.printStackTrace();
         }
 	}
+<<<<<<< HEAD:src/controller/ControllerJob.java
 	//deletendo job
+=======
+//removendo tarefa
+>>>>>>> refs/remotes/origin/master:src/controller/ControllerCadastro.java
 	public void stopJob(){
 		 try {
 			sched.deleteJob(job.getKey());
@@ -58,28 +66,47 @@ public class ControllerJob {
 			e.printStackTrace();
 		}
 	}
+<<<<<<< HEAD:src/controller/ControllerJob.java
 	//recuperando job do banco de dados
 	private String rescueSchedulingBD(){
+=======
+//pegando configuracao do banco de dados
+	public String rescueSchedulingBD(){
+>>>>>>> refs/remotes/origin/master:src/controller/ControllerCadastro.java
 		ConfigDao configDao = new ConfigDao();
-		System.out.println("Lendo configurações de trabalho");
+		System.out.println("Lendo configuraÃ§Ãµes de trabalho");
 		ConfigBean cb = configDao.readConfigurations();
 		if(cb!=null){
+<<<<<<< HEAD:src/controller/ControllerJob.java
 			System.out.println("Leitura realizada, tranferindo valores + ");
+=======
+			System.out.println(cb.getSEGUNDO()+" "+cb.getMINUTO()+" "+cb.getHORA()+" "+
+					cb.getDIA_DO_MES()+" "+cb.getMES()+" "+cb.getDIA_DA_SEMANA());
+			
+>>>>>>> refs/remotes/origin/master:src/controller/ControllerCadastro.java
 			return cb.getSEGUNDO()+" "+cb.getMINUTO()+" "+cb.getHORA()+" "+
 					cb.getDIA_DO_MES()+" "+cb.getMES()+" "+cb.getDIA_DA_SEMANA();
 		}
 		else
 			return null;
 	}
+<<<<<<< HEAD:src/controller/ControllerJob.java
 	//startando serviço
+=======
+//iniciando job
+>>>>>>> refs/remotes/origin/master:src/controller/ControllerCadastro.java
 	public void startJob(){
 		String scheduling = rescueSchedulingBD();
 		if(scheduling!=null)
 			initialize(scheduling);
 		else
-			System.out.println("Não foi possivel receber os paramentros de trabalho!");
+			System.out.println("NÃ£o foi possivel receber os paramentros de trabalho!");
 	}
+<<<<<<< HEAD:src/controller/ControllerJob.java
 	//restartando serviço
+=======
+//reiniciando job
+>>>>>>> refs/remotes/origin/master:src/controller/ControllerCadastro.java
 	public void restartJob(){
 		String scheduling = rescueSchedulingBD();
 		if(scheduling != null){
@@ -95,7 +122,7 @@ public class ControllerJob {
 			}    
 		}
 		else
-			System.out.println("Não foi possivel receber os paramentros de trabalho!");
+			System.out.println("NÃ£o foi possivel receber os paramentros de trabalho!");
 	}
 	
 
