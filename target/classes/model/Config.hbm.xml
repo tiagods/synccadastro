@@ -4,7 +4,9 @@
 
 <hibernate-mapping package="model">
   <class name="ConfigBean" table="CONFIG">
-    <id name="CODIGO" column="CODIGO" type="int" />
+    <id name="CODIGO" column="CODIGO" type="int">
+    	<generator class="identity" />
+    </id>
     <property name="SEGUNDO" length="100"/>
     <property name="MINUTO" length="100"/>
     <property name="HORA" length="100"/>

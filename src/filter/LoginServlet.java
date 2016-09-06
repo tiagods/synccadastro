@@ -2,7 +2,6 @@ package filter;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +25,7 @@ public class LoginServlet extends HttpServlet {
 			HttpSession session = request.getSession();
 			session.setAttribute("userInfo", userInfo);
 			
-			response.sendRedirect("/SyncCadastro/front/inicio.jsp");
+			response.sendRedirect("/SyncCadastro/front/Listar");
 //			request.getRequestDispatcher("/front/Listar").forward(request, response);
 		}
 		}

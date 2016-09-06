@@ -6,6 +6,10 @@ public class CadastroBean implements Serializable{
 	/**
 	 * 
 	 */
+	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
 	private int COD;
 	private String STATUS="";
 	private String COMPL_STS;

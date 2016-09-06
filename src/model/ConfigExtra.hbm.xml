@@ -4,7 +4,9 @@
 
 <hibernate-mapping package="model">
 	<class name="ConfExtraBean" table="PLANILHA_CONFIG">
-		<id name="CODIGO" column="CODIGO" type="int"/>
+		<id name="CODIGO" column="CODIGO" type="int">
+			<generator class="identity" />
+		</id>
 		<property name="PLANILHA_NOME" length="100"/>
 		<property name="PLANILHA_LOCALIZACAO" length="100"/>
 		<property name="DIRETORIO_TEMP"  length="100"/>

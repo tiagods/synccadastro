@@ -1,6 +1,5 @@
 package factory;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -16,6 +15,7 @@ public class HibernateFactory {
 		return fabrica.openSession();
 	}
 	//returnando a lista de objetos da sessao
+	@SuppressWarnings({ "deprecation", "unchecked" })
 	public List<Object> getList(Session session, Object object){
 		return session.createQuery("from "+object).list();
 	}

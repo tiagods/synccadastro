@@ -42,7 +42,7 @@ public class CadastroDao {
 		
 		File file = new File(caminho);
 		//informando a senha de descriptografia
-Biff8EncryptionKey.setCurrentUserPassword("PLKCONTRATOS");
+		Biff8EncryptionKey.setCurrentUserPassword("PLKCONTRATOS");
 		@SuppressWarnings("resource")
 		NPOIFSFileSystem fs = new NPOIFSFileSystem(file, true);
 		HSSFWorkbook workbook = new HSSFWorkbook(fs.getRoot(), true);
@@ -65,7 +65,7 @@ Biff8EncryptionKey.setCurrentUserPassword("PLKCONTRATOS");
 			if(row==null) break;
 			if(row.getRowNum()==0) continue;//pular a 1a linha
 			CadastroBean bean = new CadastroBean();
-//iterando sobre as colunas da linha
+			//iterando sobre as colunas da linha
 			Iterator<Cell> columns = row.cellIterator();
 			while(columns.hasNext()){
 				HSSFCell celula = (HSSFCell)columns.next();
@@ -544,26 +544,26 @@ Biff8EncryptionKey.setCurrentUserPassword("PLKCONTRATOS");
 		StringBuilder builder = new StringBuilder();
 		lista.forEach(c->{
 			if(c.getCOD()!=0){
-				builder.append(factory.saveOrUpdateSession(session, c));
+				builder.append(c.getCOD()+" = "+factory.saveOrUpdateSession(session, c));
 				builder.append(System.getProperty("line.separator"));
 			}
 		});
 		factory.closeSession(session);
 		return builder.toString();
 	}
-<<<<<<< HEAD
+	@SuppressWarnings("unchecked")
 	public List<CadastroBean> readClients(){
 		HibernateFactory factory = new HibernateFactory();
 		Session session = factory.getSession();
+		@SuppressWarnings("rawtypes")
 		List object = factory.getList(session, "CadastroBean");
 		factory.closeSession(session);
 		return (List<CadastroBean>)object;
 	}
-=======
-//criar um arquivo de log
->>>>>>> refs/remotes/origin/master
+	//criar um arquivo de log
 	public String  createTxtLogFile(File file, StringBuilder builder) throws IOException{
-		File f = new File(file.getAbsolutePath()+"/"+new Date()+".txt");
+		SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyy-HHmm");
+		File f = new File(file.getAbsolutePath()+"\\"+sdf.format(new Date())+".txt");
 		f.createNewFile();
 		FileWriter fWriter = new FileWriter(f, true);
 		fWriter.write(builder.toString());

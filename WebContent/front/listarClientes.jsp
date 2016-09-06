@@ -2,7 +2,7 @@
 <%@page import="java.util.*"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -11,10 +11,10 @@
 </head>
 <body>
 	<div>
-		<table align="center" width="75%" border="1">
+		<table align="center" width="75%" border="1" cellpadding="1" cellspacing="1">
 				<tr>
 					<td align="center">Codigo</td>
-					<td>Nome</td>
+					<td align="center">Nome</td>
 				</tr>
 				<c:choose>
 					<c:when test="${empty(contatos)}">
@@ -31,8 +31,5 @@
 				</c:choose>
 		</table>
 	</div>
-</body>
-</html>
-
 </body>
 </html>

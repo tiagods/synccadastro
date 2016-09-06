@@ -27,11 +27,7 @@ public class ControllerJob {
 		}
 		return instance;
 	}
-<<<<<<< HEAD:src/controller/ControllerJob.java
-	//inicializaÁ„o do agendamento
-=======
 //inicializando agendamento
->>>>>>> refs/remotes/origin/master:src/controller/ControllerCadastro.java
 	public void initialize(String agendamento){
 		try {
 			System.out.println("Agendamento criado");
@@ -45,20 +41,15 @@ public class ControllerJob {
                 .newTrigger()
                 .withIdentity("meugatilho", "grupo1")
                 .withSchedule(CronScheduleBuilder.cronSchedule(agendamento))
-//               "0/20 * * * * ?"
-//                .withSchedule(CronScheduleBuilder.cronSchedule("0 01 11 ? * MON,TUE,WED,THU,FRI,SAT"))
                 .build();
             sched.scheduleJob(job, trigger);
-        } catch (SchedulerException e) {
+
+		} catch (SchedulerException e) {
             System.out.println("erro");
             e.printStackTrace();
         }
 	}
-<<<<<<< HEAD:src/controller/ControllerJob.java
-	//deletendo job
-=======
 //removendo tarefa
->>>>>>> refs/remotes/origin/master:src/controller/ControllerCadastro.java
 	public void stopJob(){
 		 try {
 			sched.deleteJob(job.getKey());
@@ -66,35 +57,23 @@ public class ControllerJob {
 			e.printStackTrace();
 		}
 	}
-<<<<<<< HEAD:src/controller/ControllerJob.java
-	//recuperando job do banco de dados
-	private String rescueSchedulingBD(){
-=======
 //pegando configuracao do banco de dados
 	public String rescueSchedulingBD(){
->>>>>>> refs/remotes/origin/master:src/controller/ControllerCadastro.java
 		ConfigDao configDao = new ConfigDao();
 		System.out.println("Lendo configura√ß√µes de trabalho");
 		ConfigBean cb = configDao.readConfigurations();
 		if(cb!=null){
-<<<<<<< HEAD:src/controller/ControllerJob.java
 			System.out.println("Leitura realizada, tranferindo valores + ");
-=======
 			System.out.println(cb.getSEGUNDO()+" "+cb.getMINUTO()+" "+cb.getHORA()+" "+
 					cb.getDIA_DO_MES()+" "+cb.getMES()+" "+cb.getDIA_DA_SEMANA());
 			
->>>>>>> refs/remotes/origin/master:src/controller/ControllerCadastro.java
 			return cb.getSEGUNDO()+" "+cb.getMINUTO()+" "+cb.getHORA()+" "+
 					cb.getDIA_DO_MES()+" "+cb.getMES()+" "+cb.getDIA_DA_SEMANA();
 		}
 		else
 			return null;
 	}
-<<<<<<< HEAD:src/controller/ControllerJob.java
 	//startando serviÁo
-=======
-//iniciando job
->>>>>>> refs/remotes/origin/master:src/controller/ControllerCadastro.java
 	public void startJob(){
 		String scheduling = rescueSchedulingBD();
 		if(scheduling!=null)
@@ -102,11 +81,7 @@ public class ControllerJob {
 		else
 			System.out.println("N√£o foi possivel receber os paramentros de trabalho!");
 	}
-<<<<<<< HEAD:src/controller/ControllerJob.java
 	//restartando serviÁo
-=======
-//reiniciando job
->>>>>>> refs/remotes/origin/master:src/controller/ControllerCadastro.java
 	public void restartJob(){
 		String scheduling = rescueSchedulingBD();
 		if(scheduling != null){
