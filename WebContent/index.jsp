@@ -5,14 +5,19 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Inicio</title>
+ 
+<link rel="stylesheet" type="text/css" href="./front/resources/bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="./front/resources/bootstrap/css/bootstrap-theme.min.css" />
+<script src="./front/resources/bootstrap/js/bootstrap.min.js"></script>
+ 
 </head>
 <body>
 	<div>
 		<form method="GET" action="Iniciar">
-			<table align="center">
+			<table border="0" align="center">
 				<tr>
 					<td colspan="2">
-					<img src="imagens/LOGO_PROLINK_CONTABIL_POSITIVO.jpg" />
+					<img src="./front/imagens/LOGO_PROLINK_CONTABIL_POSITIVO.jpg" />
 					</td>
 				</tr>
 				<tr>
@@ -20,7 +25,7 @@
 						Usuario:
 					</td>
 					<td>
-						<input type="text" name="user" size="10">
+						<input type="text" class="form-control" name="user" size="10" style="width: 100px; ">
 					</td>	
 				</tr>
 				<tr>
@@ -28,12 +33,12 @@
 						Senha:
 					</td>
 					<td>
-						<input type="password" name="password" size="10">
+						<input type="password" class="form-control" name="password" size="10" style="width: 100px; "/>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2" align="center">
-						<input type="submit" value="Entrar" name="Entrar">
+						<input type="submit" class="btn btn-success.active" value="Entrar">
 					</td>
 				</tr>
 			</table>

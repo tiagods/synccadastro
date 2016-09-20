@@ -8,10 +8,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Listagem de Clientes</title>
+<link rel="stylesheet" type="text/css" href="./resources/bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="./resources/bootstrap/css/bootstrap-theme.min.css" />
+<script src="./resources/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
 	<div>
-		<table align="center" width="75%" border="1" cellpadding="1" cellspacing="1">
+		<table class="table table-hover" border="1">
 				<tr>
 					<td align="center">Codigo</td>
 					<td align="center">Nome</td>
@@ -23,7 +26,7 @@
 					<c:otherwise>
 						<c:forEach var="a" items="${contatos}">
 							<tr>
-								<td>${a.COD}</td>
+								<td align="center">${a.COD}</td>
 								<td>${a.EMPRESA}</td>
 							</tr>
 						</c:forEach>
