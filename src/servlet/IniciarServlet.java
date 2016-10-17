@@ -11,14 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import controller.ControllerJob;
 
-@WebServlet(value="/front/Iniciar",loadOnStartup=1)
+@WebServlet(value="/front/Iniciar", loadOnStartup=1)
 
 public class IniciarServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	public void init(ServletConfig config) throws ServletException{
 		super.init(config);
-
 		System.out.println("Requisição realizada");
 		ControllerJob controller = ControllerJob.getInstance();
 		//chamando a instancia que gerencia as tarefas agendadas

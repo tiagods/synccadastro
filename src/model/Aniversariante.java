@@ -1,4 +1,4 @@
-package factory;
+package model;
 
 public class Aniversariante {
 	private String nome;
@@ -6,6 +6,8 @@ public class Aniversariante {
 	private String empresa;
 	private String aniversario;
 	private String status;
+	private String email;
+	private String telefone;
 	/**
 	 * @return the nome
 	 */
@@ -65,5 +67,29 @@ public class Aniversariante {
 	 */
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
+	}
+	/**
+	 * @param email the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	/**
+	 * @return the telefone
+	 */
+	public String getTelefone() {
+		return telefone;
+	}
+	/**
+	 * @param telefone the telefone to set
+	 */
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
 	}
 }
