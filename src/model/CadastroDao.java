@@ -27,8 +27,10 @@ import factory.HibernateFactory;
 
 public class CadastroDao {
 	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-	long tempo;
+	long tempoDeLeitura;
+	long tempoGravacaoBD;
 	static CadastroDao instance;
+	StringBuilder builder = new StringBuilder();
 	
 	public static CadastroDao getInstance(){
 		
@@ -471,7 +473,7 @@ public class CadastroDao {
 			e.printStackTrace();
 		}
 		long fim = System.currentTimeMillis();
-		tempo = fim - inicio;
+		tempoDeLeitura = fim - inicio;
 		System.out.println("Tempo total: "+(fim-inicio)+"\nTamanho da Lista: "+lista.size());
 		return lista;
 	}
@@ -530,32 +532,41 @@ public class CadastroDao {
 		return false;
 	}
 //deletar arquivo temporario
-
 	public void removeTempWorkbook(ConfExtraBean cb){
 		File[] files = new File(cb.getDIRETORIO_TEMP()).listFiles();
 		for(File f : files)
 			f.delete();
 	}
-
 //atualizando dados
 	public String insertOrUpdate(List<CadastroBean> lista){
 		HibernateFactory factory = new HibernateFactory();
 		Session session = factory.getSession();
-		StringBuilder builder = new StringBuilder();
-		lista.forEach(c->{
-			if(c.getCOD()!=0){
-				builder.append(c.getCOD()+" = "+factory.saveOrUpdateSession(session, c));
+		long inicio = System.currentTimeMillis();
+		for(int i=0; i<lista.size(); i++){
+			CadastroBean bean = new CadastroBean();
+			if(bean.getCOD()!=0){
+				String resultado = factory.saveOrUpdateSession(session, bean);
+				if(!resultado.equals("Salvo"))
+				{
+					builder.append(bean.getCOD()+" = "+resultado+"\n");
+				}
+				builder.append(bean.getCOD()+" = "+resultado);
 				builder.append(System.getProperty("line.separator"));
+				if(i % 100 == 0){
+					session.flush();
+					session.clear();
+				}
 			}
-		});
+		}
+		long fim = System.currentTimeMillis();
+		tempoGravacaoBD = fim - inicio;
 		factory.closeSession(session);
 		return builder.toString();
 	}
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public List<CadastroBean> readClients(){
 		HibernateFactory factory = new HibernateFactory();
 		Session session = factory.getSession();
-		@SuppressWarnings("rawtypes")
 		List object = factory.getList(session, "CadastroBean");
 		factory.closeSession(session);
 		return (List<CadastroBean>)object;
@@ -570,9 +581,13 @@ public class CadastroDao {
 		fWriter.close();
 		return f.getAbsolutePath();
 	}
-	
-	//tempo de execuraçăo do processo
-	public long getTempo(){
-		return this.tempo;
+	public String getErros(){
+		return builder.toString();
+	}
+	public long getTempoLeitura(){
+		return this.tempoDeLeitura;
+	}
+	public long getTempoGravacao(){
+		return this.tempoGravacaoBD;
 	}
 }
