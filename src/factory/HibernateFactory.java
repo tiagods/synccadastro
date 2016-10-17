@@ -15,9 +15,9 @@ public class HibernateFactory {
 		return fabrica.openSession();
 	}
 	//returnando a lista de objetos da sessao
-	@SuppressWarnings({ "deprecation", "unchecked" })
+	@SuppressWarnings({"unchecked"})
 	public List<Object> getList(Session session, Object object){
-		return session.createQuery("from "+object).list();
+		return session.createQuery("from "+object).getResultList();
 	}
 	//retornando apenas 1 objeto
 
