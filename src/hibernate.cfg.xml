@@ -11,5 +11,6 @@
         <mapping resource="model/ConfigExtra.hbm.xml"/>
         <mapping resource="model/Cadastro.hbm.xml"/>
         <mapping resource="model/Status.hbm.xml"/>
+        <mapping resource="model/Comentario.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

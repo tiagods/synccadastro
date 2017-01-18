@@ -5,7 +5,7 @@
 <hibernate-mapping package="model">
 	<class name="Status" table="STATUS">
 	 	<id name="COD" type="int">
-	 		<generator class="native" />
+	 		<generator class="identity" />
 	 	</id>
 	 	<property name="DATA" type="java.util.Date" />
 	 	<property name="TEMPOLEITURA" type="long" />

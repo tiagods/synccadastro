@@ -38,6 +38,7 @@ public class HibernateFactory {
 			session.saveOrUpdate(object);
 			return "Salvo";
 		}catch(Exception e){
+			e.printStackTrace();
 			return "Erro ao Salvar: "+e.getMessage();
 		}
 	}

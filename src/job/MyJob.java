@@ -11,6 +11,8 @@ import org.quartz.JobExecutionException;
 
 import model.CadastroBean;
 import model.CadastroDao;
+import model.ComentarioBean;
+import model.ComentarioDao;
 import model.ConfExtraBean;
 import model.ConfExtraDao;
 import model.Status;
@@ -22,8 +24,8 @@ public class MyJob implements Job {
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		ConfExtraDao cextraDao = new ConfExtraDao();
 		ConfExtraBean cextraB = cextraDao.readConfigurations();
-		
-		CadastroDao cadastro = new CadastroDao();
+
+		CadastroDao cadastro = CadastroDao.getInstance();
 		synchronized (cadastro) {
 			StringBuilder builder = new StringBuilder();
 			String quebra = System.getProperty("line.separator");
@@ -43,22 +45,31 @@ public class MyJob implements Job {
 				long inicio = System.currentTimeMillis();
 				builder.append(cadastro.insertOrUpdate(lista));
 				long fim = System.currentTimeMillis();
-				Status bean = new Status(new Date(), cadastro.getTempoGravacao(), cadastro.getTempoLeitura(), cadastro.getErros());
+				
+				List<ComentarioBean> comentarios = cadastro.getComentarios();
+				builder.append(new ComentarioDao().insertOrUpdate(comentarios));
+				
+				String erros = cadastro.getErros();
+				if(erros.length()>10){
+					gerarTxt=true;
+					erros = "Foi gerado um arquivo txt com os dados não salvos";
+				}
+				Status bean = new Status(new Date(), cadastro.getTempoGravacao(), cadastro.getTempoLeitura(), erros);
 				StatusDao statusDao = new StatusDao();
 				statusDao.salvar(bean);
-				
+
 				builder.append("Processo concluido em : "+(fim-inicio)+" ms");
 				if(gerarTxt){
 					try{
-					File file = new File(cextraB.getPLANILHA_LOCALIZACAO()+"/logs");
-					if(!file.exists())
-						file.mkdir();
+						File file = new File(cextraB.getPLANILHA_LOCALIZACAO()+"/logs");
+						if(!file.exists())
+							file.mkdir();
 						cadastro.createTxtLogFile(file, builder);
 					}catch(IOException e){
 						System.out.println("Falha ao gravar o arquivo txt: "+e.getMessage());;
 					}
 				}
 			}
-			}
+		}
 	}
 }

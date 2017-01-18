@@ -2,7 +2,7 @@ package model;
 
 import java.io.Serializable;
 
-public class CadastroBean implements Serializable{
+public class ComentarioBean implements Serializable{
 	/**
 	 * 
 	 */
@@ -11,6 +11,7 @@ public class CadastroBean implements Serializable{
 	 * 
 	 */
 	private int COD;
+	private String COD_COMMENT="";
 	private String STATUS="";
 	private String COMPL_STS;
 	private String ATENDIMENTO="";
@@ -143,6 +144,18 @@ public class CadastroBean implements Serializable{
 	}
 	public void setCOD(int cOD) {
 		COD = cOD;
+	}
+	/**
+	 * @return the cOD_COMMENT
+	 */
+	public String getCOD_COMMENT() {
+		return COD_COMMENT;
+	}
+	/**
+	 * @param cOD_COMMENT the cOD_COMMENT to set
+	 */
+	public void setCOD_COMMENT(String cOD_COMMENT) {
+		COD_COMMENT = cOD_COMMENT;
 	}
 	public String getSTATUS() {
 		return STATUS;
@@ -900,5 +913,4 @@ public class CadastroBean implements Serializable{
 	public void setOBSFONE_RC2(String oBSFONE_RC2) {
 		OBSFONE_RC2 = oBSFONE_RC2;
 	}
-
 }
