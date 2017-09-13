@@ -6,6 +6,9 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,6 +28,7 @@ import org.apache.poi.ss.usermodel.RichTextString;
 import org.apache.poi.ss.usermodel.Row;
 import org.hibernate.Session;
 
+import factory.ConnectionFactory;
 import factory.HibernateFactory;
 
 public class CadastroDao {
@@ -33,7 +37,7 @@ public class CadastroDao {
 	long tempoGravacaoBD;
 	static CadastroDao instance;
 	private StringBuilder builder;
-	private static List<ComentarioBean> listaComentarios = new ArrayList<>();
+	private List<ComentarioBean> listaComentarios;
 	
 	public static CadastroDao getInstance(){
 		if(instance==null){
@@ -43,11 +47,10 @@ public class CadastroDao {
 	}
 	
 	public List<ComentarioBean> getComentarios(){
-		return this.listaComentarios;
+		return listaComentarios;
 	}
 	
 	public List<CadastroBean> readWorkbook(String caminho) throws IOException{
-		
 		File file = new File(caminho);
 		//informando a senha de descriptografia
 		Biff8EncryptionKey.setCurrentUserPassword("PLKCONTRATOS");
@@ -61,7 +64,7 @@ public class CadastroDao {
 		
 		long inicio = System.currentTimeMillis();
 		List<CadastroBean> lista = new ArrayList<>();
-		listaComentarios.clear();
+		listaComentarios = new ArrayList<>();
 		builder = new StringBuilder();
 		//pegando linhas e jogando no iterator
 
@@ -614,6 +617,7 @@ public class CadastroDao {
 		}
 		try {
 			workbook.close();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -706,6 +710,28 @@ public class CadastroDao {
 				session.clear();
 			}
 		}
+		
+		Connection con = new ConnectionFactory().getConnection();
+		try{
+			PreparedStatement ps = con.prepareStatement("delete from cliente");
+			ps.executeUpdate();
+			lista.forEach(c->{
+				try{
+					ps.clearParameters();
+					String sqlCommand = "insert into cliente (id,nome,status) values (?,?,?)";
+					PreparedStatement p = con.prepareStatement(sqlCommand);
+					p.setInt(1,c.getCOD());
+					p.setString(2,c.getEMPRESA());
+					p.setString(3,c.getSTATUS());
+					p.executeUpdate();
+				}catch(SQLException e){
+					e.printStackTrace();
+				}
+			});
+		}catch(SQLException e){
+			try{con.close();}catch(SQLException sql){}
+		}
+		
 		long fim = System.currentTimeMillis();
 		tempoGravacaoBD = fim - inicio;
 		factory.closeSession(session);
@@ -723,7 +749,7 @@ public class CadastroDao {
 	//criar um arquivo de log
 	public String  createTxtLogFile(File file, StringBuilder builder) throws IOException{
 		SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyy-HHmm");
-		File f = new File(file.getAbsolutePath()+"\\"+sdf.format(new Date())+".txt");
+		File f = new File(file.getAbsolutePath()+"/"+sdf.format(new Date())+".txt");
 		f.createNewFile();
 		FileWriter fWriter = new FileWriter(f, true);
 		fWriter.write(builder.toString());

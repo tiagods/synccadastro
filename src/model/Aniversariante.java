@@ -8,6 +8,7 @@ public class Aniversariante {
 	private String status;
 	private String email;
 	private String telefone;
+	private int tipoSocio;
 	/**
 	 * @return the nome
 	 */
@@ -91,5 +92,17 @@ public class Aniversariante {
 	 */
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
+	}
+	/**
+	 * @return the tipoSocio
+	 */
+	public int getTipoSocio() {
+		return tipoSocio;
+	}
+	/**
+	 * @param tipoSocio the tipoSocio to set
+	 */
+	public void setTipoSocio(int tipoSocio) {
+		this.tipoSocio = tipoSocio;
 	}
 }

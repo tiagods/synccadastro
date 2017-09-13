@@ -45,31 +45,31 @@
 						<c:forEach var="a" items="${aniversariantes}">
 							<tr>
 								<th
-									style="background-color: rgb(255, 204, 0); border-color: rgb(102, 102, 102); text-align: center;">
+									style="border-color: rgb(102, 102, 102); text-align: center;">
 									<span style="color: rgb(0, 0, 153);">${a.aniversario}</span>
 								</th>
 								<th
-									style="background-color: rgb(255, 204, 0); border-color: rgb(102, 102, 102); text-align: center;">
+									style="border-color: rgb(102, 102, 102); text-align: center;">
 									<span style="color: rgb(0, 0, 153);">${a.id}</span>
 								</th>
 								<th
-									style="background-color: rgb(255, 204, 0); border-color: rgb(102, 102, 102); text-align: center;">
+									style="border-color: rgb(102, 102, 102); text-align: center;">
 									<span style="color: rgb(0, 0, 153);">${a.status}</span>
 								</th>
 								<th
-									style="background-color: rgb(255, 204, 0); border-color: rgb(102, 102, 102);">
+									style="border-color: rgb(102, 102, 102);">
 									<span style="color: rgb(0, 0, 153);">${a.empresa}</span>
 								</th>
 								<th
-									style="background-color: rgb(255, 204, 0); border-color: rgb(102, 102, 102);">
+									style="border-color: rgb(102, 102, 102);">
 									<span style="color: rgb(0, 0, 153);">${a.nome}</span>
 								</th>
 								<th
-									style="background-color: rgb(255, 204, 0); border-color: rgb(102, 102, 102); text-align: center;">
+									style="border-color: rgb(102, 102, 102); text-align: center;">
 									<span style="color: rgb(0, 0, 153);">${a.telefone}</span>
 								</th>
 								<th
-									style="background-color: rgb(255, 204, 0); border-color: rgb(102, 102, 102);">
+									style="border-color: rgb(102, 102, 102);">
 									<p>
 										<span style="color: rgb(0, 0, 153);">${a.email}</span>
 									</p>

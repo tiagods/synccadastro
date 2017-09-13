@@ -2,6 +2,8 @@ package job;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +11,7 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import model.AniversarianteDao;
 import model.CadastroBean;
 import model.CadastroDao;
 import model.ComentarioBean;
@@ -19,12 +22,10 @@ import model.Status;
 import model.StatusDao;
 
 public class MyJob implements Job {
-
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		ConfExtraDao cextraDao = new ConfExtraDao();
 		ConfExtraBean cextraB = cextraDao.readConfigurations();
-
 		CadastroDao cadastro = CadastroDao.getInstance();
 		synchronized (cadastro) {
 			StringBuilder builder = new StringBuilder();
@@ -58,12 +59,15 @@ public class MyJob implements Job {
 				StatusDao statusDao = new StatusDao();
 				statusDao.salvar(bean);
 
+				Calendar calendar = Calendar.getInstance();
+				if(calendar.get(Calendar.DAY_OF_WEEK)==Calendar.MONDAY && calendar.get(Calendar.HOUR_OF_DAY)<13 &&
+						!new File(cextraB.getDIRETORIO_TEMP()+"/envio"+new SimpleDateFormat("ddMMyyyy").format(new Date())+".txt").exists()){
+					new AniversarianteDao().processarEnviarAniversariantes(calendar, cextraB);
+				}
 				builder.append("Processo concluido em : "+(fim-inicio)+" ms");
 				if(gerarTxt){
 					try{
-						File file = new File(cextraB.getPLANILHA_LOCALIZACAO()+"/logs");
-						if(!file.exists())
-							file.mkdir();
+						File file = new File(cextraB.getDIRETORIO_TEMP());
 						cadastro.createTxtLogFile(file, builder);
 					}catch(IOException e){
 						System.out.println("Falha ao gravar o arquivo txt: "+e.getMessage());;
@@ -72,4 +76,5 @@ public class MyJob implements Job {
 			}
 		}
 	}
+	
 }

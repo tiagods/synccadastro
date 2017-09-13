@@ -60,13 +60,8 @@ public class ControllerJob {
 //pegando configuracao do banco de dados
 	public String rescueSchedulingBD(){
 		ConfigDao configDao = new ConfigDao();
-		System.out.println("Lendo configurações de trabalho");
 		ConfigBean cb = configDao.readConfigurations();
 		if(cb!=null){
-			System.out.println("Leitura realizada, tranferindo valores + ");
-			System.out.println(cb.getSEGUNDO()+" "+cb.getMINUTO()+" "+cb.getHORA()+" "+
-					cb.getDIA_DO_MES()+" "+cb.getMES()+" "+cb.getDIA_DA_SEMANA());
-			
 			return cb.getSEGUNDO()+" "+cb.getMINUTO()+" "+cb.getHORA()+" "+
 					cb.getDIA_DO_MES()+" "+cb.getMES()+" "+cb.getDIA_DA_SEMANA();
 		}
@@ -79,7 +74,7 @@ public class ControllerJob {
 		if(scheduling!=null)
 			initialize(scheduling);
 		else
-			System.out.println("Não foi possivel receber os paramentros de trabalho!");
+			System.out.println("Nao foi possivel receber os paramentros de trabalho!");
 	}
 	//restartando servi�o
 	public void restartJob(){
@@ -97,7 +92,7 @@ public class ControllerJob {
 			}    
 		}
 		else
-			System.out.println("Não foi possivel receber os paramentros de trabalho!");
+			System.out.println("Nao foi possivel receber os paramentros de trabalho!");
 	}
 	
 

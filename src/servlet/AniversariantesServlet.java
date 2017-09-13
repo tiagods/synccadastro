@@ -14,6 +14,11 @@ import model.AniversarianteDao;
 
 @WebServlet(value="/front/Aniversarios")
 public class AniversariantesServlet extends HttpServlet{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2891484410005297747L;
+
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		AniversarianteDao aniversarios = AniversarianteDao.getInstance();
 		List<Aniversariante> aniversariantes = aniversarios.receberAniversariantes();
