@@ -372,7 +372,7 @@ public class AniversarianteDao {
 		builder.append("				<tbody>");
 			
 		for(int i = 0; i < lista.size(); i++) {
-			String trClass = "table-sucess";
+			String trClass = "table-success";
 			Aniversariante an = lista.get(i);
 			String email = an.getEmail().replace(";", ";<br>");
 		    if(i%2==1) {
