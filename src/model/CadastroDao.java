@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -709,29 +710,48 @@ public class CadastroDao {
 				session.flush();
 				session.clear();
 			}
-		}
-		
+		}		
 		Connection con = new ConnectionFactory().getConnection();
 		try{
-			PreparedStatement ps = con.prepareStatement("delete from cliente");
-			ps.executeUpdate();
+			PreparedStatement ps = con.prepareStatement("select max(id) from cliente");
+			int key = 0;
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				key = rs.getInt(1);
+			}
+			final int lastkey = key;
+			
 			lista.forEach(c->{
 				try{
-					ps.clearParameters();
-					String sqlCommand = "insert into cliente (id,nome,status) values (?,?,?)";
-					PreparedStatement p = con.prepareStatement(sqlCommand);
-					p.setInt(1,c.getCOD());
-					p.setString(2,c.getEMPRESA());
-					p.setString(3,c.getSTATUS());
-					p.executeUpdate();
+					String sqlCommand;
+					PreparedStatement p;
+							
+					if(c.getCOD()<=lastkey) {
+						sqlCommand = "update cliente set nome=?,status=?,cnpj=? where id=?";
+						p = con.prepareStatement(sqlCommand);
+						p.setString(1,c.getEMPRESA());
+						p.setString(2,c.getSTATUS());
+						p.setString(3,c.getCNPJ());
+						p.setInt(4,c.getCOD());
+						p.executeUpdate();
+					}
+					else{
+						if(c.getCOD()>0) {
+							sqlCommand = "insert into cliente (id,nome,status,cnpj) values (?,?,?,?)";
+							p = con.prepareStatement(sqlCommand);
+							p.setInt(1,c.getCOD());
+							p.setString(2,c.getEMPRESA());
+							p.setString(3,c.getSTATUS());
+							p.setString(4,c.getCNPJ());
+							p.executeUpdate();
+						}
+					}
 				}catch(SQLException e){
 					e.printStackTrace();
 				}
 			});
 		}catch(SQLException e){
-			try{con.close();}catch(SQLException sql){}
-		}
-		
+		}finally {try{con.close();}catch(SQLException sql){}}
 		long fim = System.currentTimeMillis();
 		tempoGravacaoBD = fim - inicio;
 		factory.closeSession(session);
