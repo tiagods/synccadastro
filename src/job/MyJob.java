@@ -3,6 +3,8 @@ package job;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +20,7 @@ import model.ComentarioBean;
 import model.ComentarioDao;
 import model.ConfExtraBean;
 import model.ConfExtraDao;
+import model.DarfsDao;
 import model.Status;
 import model.StatusDao;
 
@@ -72,6 +75,14 @@ public class MyJob implements Job {
 					}catch(IOException e){
 						System.out.println("Falha ao gravar o arquivo txt: "+e.getMessage());;
 					}
+				}
+				LocalDateTime dateNow = LocalDateTime.now();
+				if(dateNow.getHour()>17 && dateNow.getDayOfMonth() <= 0){
+					LocalDateTime localDate2 = dateNow.plusMonths(-1);
+					LocalDateTime localDate3 = dateNow.plusMonths(-2);
+					DarfsDao darfs = new DarfsDao();
+					darfs.iniciar(localDate2);			
+					darfs.iniciar(localDate3);
 				}
 			}
 		}

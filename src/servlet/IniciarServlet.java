@@ -18,7 +18,6 @@ public class IniciarServlet extends HttpServlet {
        
 	public void init(ServletConfig config) throws ServletException{
 		super.init(config);
-		System.out.println("Requisição realizada");
 		ControllerJob controller = ControllerJob.getInstance();
 		//chamando a instancia que gerencia as tarefas agendadas
 		controller.startJob();
