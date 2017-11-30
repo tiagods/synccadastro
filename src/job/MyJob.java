@@ -3,7 +3,6 @@ package job;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
@@ -77,7 +76,7 @@ public class MyJob implements Job {
 					}
 				}
 				LocalDateTime dateNow = LocalDateTime.now();
-				if(dateNow.getHour()>17 && dateNow.getDayOfMonth() <= 0){
+				if(dateNow.getHour()>17 && dateNow.getDayOfMonth() <= 20){
 					LocalDateTime localDate2 = dateNow.plusMonths(-1);
 					LocalDateTime localDate3 = dateNow.plusMonths(-2);
 					DarfsDao darfs = new DarfsDao();

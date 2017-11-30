@@ -18,25 +18,21 @@ public class DarfsDao{
 	private File pathTo;
 	public void iniciar(LocalDateTime localDate2){
 		int mes = localDate2.getMonthValue();
+		String mesComZero = mes<10?"0"+mes:String.valueOf(mes);
 		pathTo = new File("\\\\plkserver\\Todos Departamentos\\_DARF\\"+localDate2.getYear()+"\\"+
-				(mes<10?"0"+mes:mes));
+				(mesComZero));
 		if(!pathTo.exists()) pathTo.mkdirs();
+		File dir = new File("\\\\plkserver\\Todos Departamentos\\DeptoPessoal\\EMPRESAS FOLHA\\_EMPRESAS DIVS_2014 E 2015");
+		File dir2 = new File("\\\\plkserver\\Todos Departamentos\\Faturamento\\PROLINK DIGITAL 10-2017");
+		File dir3 = new File("\\\\plkserver\\Todos Departamentos\\PROLINK DIGITAL\\2017\\PROLINK DIGITAL 09-2017");
 		
-		File dir = new File("\\\\plkserver\\Todos Departamentos\\DeptoPessoal\\EMPRESAS FOLHA");
-		File[] files = dir.listFiles(new FilenameFilter() {
-			@Override
-			public boolean accept(File dir, String name) {
-				return !name.contains("_EMPRESAS DIVS_2014 E 2015");
-			}
-		});
+		File[] files = dir.listFiles();
 		for(File f : files) {
 			String[] empresa = f.getName().split(" ");
 			String nomeEmpresa = empresa[empresa.length-1];
 			if(f.isDirectory()) {
-				buscar(f,nomeEmpresa,(mes<10?"0"+mes:""+mes),localDate2.getYear());
+				buscar(f,nomeEmpresa,(mesComZero),localDate2.getYear());
 			}
-			else
-				continue;
 		}
 		FileWriter fw;
 		try {
