@@ -25,11 +25,20 @@ public class DarfsDao{
 		if(!pathTo.exists()) pathTo.mkdirs();
 		
 		File dir = new File("\\\\plkserver\\Todos Departamentos\\DeptoPessoal\\EMPRESAS FOLHA\\_EMPRESAS DIVS_2014 E 2015");
+		
+		
+		
 		File dir2 = new File("\\\\plkserver\\Todos Departamentos\\Faturamento\\PROLINK DIGITAL "+mesComZero+"-"+ano);
 		if(!dir2.exists())
 			dir2= new File("\\\\plkserver\\Todos Departamentos\\PROLINK DIGITAL\\"+ano+"\\PROLINK DIGITAL "+mesComZero+"-"+ano);
 		
-		File[] files = dir.listFiles();
+		File[] files = dir.listFiles(new FilenameFilter() {
+			@Override
+			public boolean accept(File dir, String name) {
+				return !name.contains("_EMPRESAS DIVS_2014 E 2015");
+			}
+		});
+		
 		for(File f : files) {
 			String[] empresa = f.getName().split(" ");
 			String nomeEmpresa = empresa[empresa.length-1];
@@ -38,13 +47,12 @@ public class DarfsDao{
 			}
 		}
 		if(!dir2.exists()) mapa.put(dir2, null);
-		for(File f : files) {
+		
+		for(File f : dir2.listFiles()) {
 			if(f.isDirectory()) {
-				buscarPlDigital(f,nomeEmpresa,mesComZero,ano);
+				buscarPlDigital(f,f.getName(),mesComZero,ano);
 			}
-		}
-		
-		
+		}		
 		FileWriter fw;
 		try {
 			File fRelat = new File(pathTo.getAbsolutePath()+"\\relatorios");
@@ -73,26 +81,10 @@ public class DarfsDao{
 		File[] files = file.listFiles();
 		for(File f : files) {
 			if(f.isDirectory()) {
-				buscarDP(f,nomeEmpresa,mes,ano);
+				buscarPlDigital(f,nomeEmpresa,mes,ano);
 			}
 			else if(f.getName().toUpperCase().contains("DARF")){
-				if(f.getAbsolutePath().contains(mes+"."+ano)) {
-					String arquivoNome = f.getName().contains(nomeEmpresa)?f.getName():nomeEmpresa+" - "+f.getName();
-					File fileFinal = new File(pathTo+"\\"+arquivoNome);
-					
-					if(!fileFinal.exists() || f.lastModified()>fileFinal.lastModified()) {
-						Path pathI = Paths.get(f.getAbsolutePath());
-			            Path pathO = Paths.get(fileFinal.getAbsolutePath());
-			            try {
-							Files.copy(pathI, pathO, StandardCopyOption.REPLACE_EXISTING);
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-			            mapa.put(f, fileFinal);
-					}
-				}
-				else 
-					continue;
+				fileCopy(f,nomeEmpresa);
 			}
 		}
 	}
@@ -104,23 +96,24 @@ public class DarfsDao{
 			}
 			else if(f.getName().toUpperCase().contains("DARF")){
 				if(f.getAbsolutePath().contains(mes+"."+ano)) {
-					String arquivoNome = f.getName().contains(nomeEmpresa)?f.getName():nomeEmpresa+" - "+f.getName();
-					File fileFinal = new File(pathTo+"\\"+arquivoNome);
-					
-					if(!fileFinal.exists() || f.lastModified()>fileFinal.lastModified()) {
-						Path pathI = Paths.get(f.getAbsolutePath());
-			            Path pathO = Paths.get(fileFinal.getAbsolutePath());
-			            try {
-							Files.copy(pathI, pathO, StandardCopyOption.REPLACE_EXISTING);
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-			            mapa.put(f, fileFinal);
-					}
+					fileCopy(f,nomeEmpresa);
 				}
-				else 
-					continue;
 			}
+		}
+	}
+	private void fileCopy(File f, String nomeEmpresa) {
+		String arquivoNome = f.getName().contains(nomeEmpresa)?f.getName():nomeEmpresa+" - "+f.getName();
+		File fileFinal = new File(pathTo+"\\"+arquivoNome);
+		
+		if(!fileFinal.exists() || f.lastModified()>fileFinal.lastModified()) {
+			Path pathI = Paths.get(f.getAbsolutePath());
+            Path pathO = Paths.get(fileFinal.getAbsolutePath());
+            try {
+				Files.copy(pathI, pathO, StandardCopyOption.REPLACE_EXISTING);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+            mapa.put(f, fileFinal);
 		}
 	}
 
