@@ -18,16 +18,16 @@ public class DarfsDao{
 	private Map<File,File> mapa = new HashMap<>();;
 	private File pathTo;
 	
-	public static void main(String[] args) {
-		DarfsDao darf = new DarfsDao();
-		DarfsDao darf1 = new DarfsDao();
-		
-		LocalDateTime dateNow = LocalDateTime.now();
-		LocalDateTime localDate2 = dateNow.plusMonths(-1);
-		LocalDateTime localDate3 = dateNow.plusMonths(-2);
-		darf.iniciar(localDate2);			
-		darf1.iniciar(localDate3);
-	}
+//	public static void main(String[] args) {
+//		DarfsDao darf = new DarfsDao();
+//		DarfsDao darf1 = new DarfsDao();
+//		
+//		LocalDateTime dateNow = LocalDateTime.now();
+//		LocalDateTime localDate2 = dateNow.plusMonths(-1);
+//		LocalDateTime localDate3 = dateNow.plusMonths(-2);
+//		darf.iniciar(localDate2);			
+//		darf1.iniciar(localDate3);
+//	}
 	
 	public void iniciar(LocalDateTime localDate2){
 		int mes = localDate2.getMonthValue();
