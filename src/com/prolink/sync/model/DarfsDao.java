@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -16,6 +17,18 @@ import java.util.Map;
 public class DarfsDao{
 	private Map<File,File> mapa = new HashMap<>();;
 	private File pathTo;
+	
+	public static void main(String[] args) {
+		DarfsDao darf = new DarfsDao();
+		DarfsDao darf1 = new DarfsDao();
+		
+		LocalDateTime dateNow = LocalDateTime.now();
+		LocalDateTime localDate2 = dateNow.plusMonths(-1);
+		LocalDateTime localDate3 = dateNow.plusMonths(-2);
+		darf.iniciar(localDate2);			
+		darf1.iniciar(localDate3);
+	}
+	
 	public void iniciar(LocalDateTime localDate2){
 		int mes = localDate2.getMonthValue();
 		int ano = localDate2.getYear();
@@ -24,9 +37,7 @@ public class DarfsDao{
 				(mesComZero));
 		if(!pathTo.exists()) pathTo.mkdirs();
 		
-		File dir = new File("\\\\plkserver\\Todos Departamentos\\DeptoPessoal\\EMPRESAS FOLHA\\_EMPRESAS DIVS_2014 E 2015");
-		
-		
+		File dir = new File("\\\\plkserver\\Todos Departamentos\\DeptoPessoal\\EMPRESAS FOLHA");
 		
 		File dir2 = new File("\\\\plkserver\\Todos Departamentos\\Faturamento\\PROLINK DIGITAL "+mesComZero+"-"+ano);
 		if(!dir2.exists())
@@ -58,7 +69,7 @@ public class DarfsDao{
 			File fRelat = new File(pathTo.getAbsolutePath()+"\\relatorios");
 			if(!fRelat.exists())
 				fRelat.mkdir();
-			fw = new FileWriter(new File(fRelat.getAbsolutePath()+"\\resultado "+localDate2.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))+".csv"));
+			fw = new FileWriter(new File(fRelat.getAbsolutePath()+"\\resultado "+LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))+".csv"));
 			StringBuilder builder = new StringBuilder();
 			builder.append("Localização");
 			builder.append(";");
@@ -83,7 +94,7 @@ public class DarfsDao{
 			if(f.isDirectory()) {
 				buscarPlDigital(f,nomeEmpresa,mes,ano);
 			}
-			else if(f.getName().toUpperCase().contains("DARF")){
+			else if(f.getName().toUpperCase().contains("DARF") && f.getName().toUpperCase().endsWith(".PDF")){
 				fileCopy(f,nomeEmpresa);
 			}
 		}
@@ -94,7 +105,7 @@ public class DarfsDao{
 			if(f.isDirectory()) {
 				buscarDP(f,nomeEmpresa,mes,ano);
 			}
-			else if(f.getName().toUpperCase().contains("DARF")){
+			else if(f.getName().toUpperCase().contains("DARF") && f.getName().toUpperCase().endsWith(".PDF")){
 				if(f.getAbsolutePath().contains(mes+"."+ano)) {
 					fileCopy(f,nomeEmpresa);
 				}
