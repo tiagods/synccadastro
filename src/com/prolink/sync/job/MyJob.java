@@ -55,7 +55,7 @@ public class MyJob implements Job {
 				String erros = cadastro.getErros();
 				if(erros.length()>10){
 					gerarTxt=true;
-					erros = "Foi gerado um arquivo txt com os dados não salvos";
+					erros = "Foi gerado um arquivo txt com os dados nao salvos";
 				}
 				Status bean = new Status(new Date(), cadastro.getTempoGravacao(), cadastro.getTempoLeitura(), erros);
 				StatusDao statusDao = new StatusDao();

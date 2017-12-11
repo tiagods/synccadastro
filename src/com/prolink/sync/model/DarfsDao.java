@@ -71,14 +71,14 @@ public class DarfsDao{
 				fRelat.mkdir();
 			fw = new FileWriter(new File(fRelat.getAbsolutePath()+"\\resultado "+LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))+".csv"));
 			StringBuilder builder = new StringBuilder();
-			builder.append("Localização");
+			builder.append("LocalizaÃ§Ã£o");
 			builder.append(";");
 			builder.append("Destino");
 			builder.append(System.getProperty("line.separator"));
 			mapa.keySet().forEach(c->{
 				builder.append(c.getAbsolutePath());
 				builder.append(";");
-				builder.append(mapa.get(c)==null?"Não foi possivel localizar a pasta Prolink Digital":mapa.get(c).getAbsolutePath());
+				builder.append(mapa.get(c)==null?"NÃ£o foi possivel localizar a pasta Prolink Digital":mapa.get(c).getAbsolutePath());
 				builder.append(System.getProperty("line.separator"));
 			});
 			fw.write(builder.toString());

@@ -7,7 +7,7 @@ import java.io.IOException;
 public class Cascade {
 	
 	public static void main(String[] args) {
-		File file = new File("\\\\plkserver\\Todos Departamentos\\DeptoPessoal\\EMPRESAS EM GERAL - EXTEMPORÂNEA");
+		File file = new File("\\\\plkserver\\Todos Departamentos\\DeptoPessoal\\EMPRESAS EM GERAL - EXTEMPORÃ‚NEA");
 		File[] f = file.listFiles();
 		
 		StringBuilder builder = new StringBuilder();
