@@ -44,7 +44,7 @@ public class ExcelGenerico {
 		WritableSheet sheet = workbook.getSheet(0);
 		
 		WritableFont font1 = new WritableFont(WritableFont.TIMES,14,WritableFont.BOLD);
-		// Define o formato da célula
+		// Define o formato da celula
 		font1.setColour(Colour.WHITE);
 		fontCabecalho = new WritableCellFormat(font1);
 		//Colour corBorda = Colour.getInternalColour(new Color(128,125,128).getRGB());

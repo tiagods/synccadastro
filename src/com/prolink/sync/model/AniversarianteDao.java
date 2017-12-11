@@ -32,7 +32,7 @@ public class AniversarianteDao {
 			instance = new AniversarianteDao();
 		return instance;
 	}
-	@SuppressWarnings({ "deprecation", "unchecked" })
+	@SuppressWarnings("unchecked")
 	public List<Aniversariante> receberAniversariantes(){
 		HibernateFactory factory = new HibernateFactory();
 		Session session = factory.getSession();
@@ -49,7 +49,7 @@ public class AniversarianteDao {
 		lista.add(sexta);
 		lista.add(sabado);
 		lista.add(domingo);
-		String[] a = new String[]{"PLATINA","PRATA 2","OURO 3","OURO 2","PRATA 3","OURO 1","BRONZE","PRATA 1","Exceção","Inativa","Em andamento"};
+		String[] a = new String[]{"PLATINA","PRATA 2","OURO 3","OURO 2","PRATA 3","OURO 1","BRONZE","PRATA 1","Exceï¿½ï¿½o","Inativa","Em andamento"};
 		List<String> filtroStatus = new ArrayList<String>();
 		for(String t : a)
 			filtroStatus.add(t);
@@ -137,7 +137,7 @@ public class AniversarianteDao {
 		case 2:
 			return "Fevereiro";
 		case 3:
-			return "Março";
+			return "Marï¿½o";
 		case 4:
 			return "Abril";
 		case 5:
@@ -165,7 +165,7 @@ public class AniversarianteDao {
 			return "01";
 		case "FEVEREIRO":
 			return "02";
-		case "MARÇO":
+		case "MARï¿½O":
 			return "03";
 		case "ABRIL":
 			return "04";
@@ -243,7 +243,7 @@ public class AniversarianteDao {
 	        SendMail email = new SendMail();
 	        LocalDate localDate = LocalDate.now();
 	        String mes = convertMounth(localDate.getMonthValue());
-	        String assunto = " Aniversariantes em "+mes+" - "+calendar.get(Calendar.WEEK_OF_MONTH)+"ª semana";
+	        String assunto = " Aniversariantes em "+mes+" - "+calendar.get(Calendar.WEEK_OF_MONTH)+"ï¿½ semana";
 	        String[] contas = new String[]{"isabelle.souza@prolinkcontabil.com.br","monary.torres@prolinkcontabil.com.br",
 	        		"victor.santos@prolinkcontabil.com.br","tiago.dias@prolinkcontabil.com.br"};
 	        //String[] contas = new String[] {"tiago.dias@prolinkcontabil.com.br"};

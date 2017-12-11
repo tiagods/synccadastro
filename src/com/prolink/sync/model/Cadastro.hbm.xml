@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
-<hibernate-mapping package="model">
+<hibernate-mapping package="com.prolink.sync.model">
 <class name="CadastroBean" table="CLIENTE">
 <id name="COD" type="int"/>
 <property name="STATUS" length="100"/>

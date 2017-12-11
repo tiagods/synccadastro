@@ -5,10 +5,10 @@
                                          "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <mapping resource="model/Config.hbm.xml"/>
-        <mapping resource="model/ConfigExtra.hbm.xml"/>
-        <mapping resource="model/Cadastro.hbm.xml"/>
-        <mapping resource="model/Status.hbm.xml"/>
-        <mapping resource="model/Comentario.hbm.xml"/>
+        <mapping resource="com/prolink/sync/model/Config.hbm.xml"/>
+        <mapping resource="com/prolink/sync/model/ConfigExtra.hbm.xml"/>
+        <mapping resource="com/prolink/sync/model/Cadastro.hbm.xml"/>
+        <mapping resource="com/prolink/sync/model/Status.hbm.xml"/>
+        <mapping resource="com/prolink/sync/model/Comentario.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

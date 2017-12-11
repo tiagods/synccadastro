@@ -26,11 +26,11 @@ public class HibernateFactory {
 	//returnando a lista de objetos da sessao
 	@SuppressWarnings({"unchecked"})
 	public List<Object> getList(Session session, Object object){
-		return session.createQuery("from "+object).getResultList();
+		return session.createQuery("from "+object).list();
 	}
 	//retornando apenas 1 objeto
 	public Object getObject(Session session, Object object){
-		return session.createQuery("from "+object).getFirstResult();
+		return session.createQuery("from "+object).list();
 	}
 	//salvar ou atualiza
 	public String  saveOrUpdateSession(Session session, Object object){

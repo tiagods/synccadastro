@@ -3,7 +3,7 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Tiago Dias
 -->
-<hibernate-mapping package="model">
+<hibernate-mapping package="com.prolink.sync.model">
 	<class name="Status" table="STATUS">
 	 	<id name="COD" type="int">
 	 		<generator class="identity" />
