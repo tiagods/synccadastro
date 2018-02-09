@@ -243,7 +243,7 @@ public class AniversarianteDao {
 	        SendMail email = new SendMail();
 	        LocalDate localDate = LocalDate.now();
 	        String mes = convertMounth(localDate.getMonthValue());
-	        String assunto = " Aniversariantes em "+mes+" - "+calendar.get(Calendar.WEEK_OF_MONTH)+"ï¿½ semana";
+	        String assunto = " Aniversariantes em "+mes+" - "+calendar.get(Calendar.WEEK_OF_MONTH)+"ª semana";
 	        String[] contas = new String[]{"isabelle.souza@prolinkcontabil.com.br","monary.torres@prolinkcontabil.com.br",
 	        		"victor.santos@prolinkcontabil.com.br","tiago.dias@prolinkcontabil.com.br"};
 	        //String[] contas = new String[] {"tiago.dias@prolinkcontabil.com.br"};
