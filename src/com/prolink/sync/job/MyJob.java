@@ -20,6 +20,7 @@ import com.prolink.sync.model.ComentarioDao;
 import com.prolink.sync.model.ConfExtraBean;
 import com.prolink.sync.model.ConfExtraDao;
 import com.prolink.sync.model.DarfsDao;
+import com.prolink.sync.model.LembreteProLaboreDao;
 import com.prolink.sync.model.Status;
 import com.prolink.sync.model.StatusDao;
 
@@ -65,6 +66,18 @@ public class MyJob implements Job {
 				if(calendar.get(Calendar.DAY_OF_WEEK)==Calendar.MONDAY && calendar.get(Calendar.HOUR_OF_DAY)<13 &&
 						!new File(cextraB.getDIRETORIO_TEMP()+"/envio"+new SimpleDateFormat("ddMMyyyy").format(new Date())+".txt").exists()){
 					new AniversarianteDao().processarEnviarAniversariantes(calendar, cextraB);
+				}
+				if(calendar.get(Calendar.DAY_OF_MONTH)==2 && calendar.get(Calendar.HOUR_OF_DAY)<13 && 
+						!new File(cextraB.getDIRETORIO_TEMP()+"/email"+new SimpleDateFormat("ddMMyyyy").format(new Date())+".txt").exists()) {
+					String[] idClientes = new String[] {"2361","2409"};
+					for(String cliente : idClientes) {
+						LembreteProLaboreDao lemb = new LembreteProLaboreDao();
+						lemb.enviarLembrete(new String[] {"jose.ferreira@prolinkcontabil.com.br",
+								"fernando.fonseca@prolinkcontabil.com.br",
+								"karin.fernandes@prolinkcontabil.com.br"}, 
+								new String[] {"viviane.favero@sequenza.com.br"}
+								,cliente, cextraB);
+					}
 				}
 				builder.append("Processo concluido em : "+(fim-inicio)+" ms");
 				if(gerarTxt){

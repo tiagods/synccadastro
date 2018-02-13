@@ -7,7 +7,7 @@ public class SendMail {
 	
 	private String errorMessage="";
 	
-    public boolean enviaAlerta(String[] conta, String titulo, String mensagem, EmailAttachment atach){
+    public boolean enviaAlerta(String[] conta, String[] copias, String titulo, String mensagem, EmailAttachment atach){
     HtmlEmail email = new HtmlEmail();
     email.setHostName( "email-ssl.com.br" );
     email.setSmtpPort(587);
@@ -16,10 +16,9 @@ public class SendMail {
         email.setFrom( "alertas@prolinkcontabil.com.br" , "Prolink Contabil");
         email.setSubject( titulo );
         email.setHtmlMsg( mensagem );
-        for(String s : conta)
-        	email.addTo(s);
-        if(atach!=null) 
-        	email.attach(atach);
+        for(String s : conta) email.addTo(s);
+        for(String c : copias) email.addCc(c);
+        if(atach!=null) email.attach(atach);
         email.send();
         return true;
     } catch (Exception e) {
