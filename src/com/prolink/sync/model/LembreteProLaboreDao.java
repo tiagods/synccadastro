@@ -16,7 +16,7 @@ public class LembreteProLaboreDao {
 		
 		String message = mensagem(saudacao);
 		SendMail mail = new SendMail();
-		if(mail.enviaAlerta(conta,copias,cliente+"-SolicitaÃ§Ã£o de Demonstrativos de PrÃ³-labore do mÃªs", message, null)){
+		if(mail.enviaAlerta(conta,copias,cliente+"-Solicitação de Demonstrativos de Pró-Labore", message, null)){
 			try {
 				File f = new File(cb.getDIRETORIO_TEMP()+"\\email"+new SimpleDateFormat("ddMMyyyy").format(new Date())+".txt");
 				f.createNewFile();
@@ -35,17 +35,15 @@ public class LembreteProLaboreDao {
 		sb.append("		<div class=\"container\">");
 		sb.append("			<div class=\"page-header\">");
 		sb.append("				<h3>");
-		sb.append(saudacao);
+		sb.append("Bom dia,");
 		sb.append("				</h3>");
 		sb.append("			</div>");
 		sb.append("			<p>");
 		sb.append("				Solicito o envio dos demonstrativos de Pr&oacute;-Labore do m&ecirc;s para a empresa acima citada.</p>");
 		sb.append("			<div class=\"page-footer\">");
-		sb.append("				<p>");
-		sb.append("					Essa mensagem &eacute; autom&aacute;tica, favor n&atilde;o responder.</p>");
 		sb.append("				<br />");
 		sb.append("				<h4 style=\"text-align:center;\">");
-		sb.append("					<span style=\"color:#a9a9a9;\">Todos os direitos reservados a Prolink Cont&aacute;bil - 2018</span></h4>");
+		sb.append("					<span style=\"color:#a9a9a9;\">Essa mensagem &eacute; autom&aacute;tica, favor n&atilde;o responder</span></h4>");
 		sb.append("			</div>");
 		sb.append("		</div>");
 		sb.append("	</body>");

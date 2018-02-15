@@ -30,4 +30,5 @@ public class SendMail {
     public String getErroMessage(){
     	return this.errorMessage;
     }
+
 }

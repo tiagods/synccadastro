@@ -137,7 +137,7 @@ public class AniversarianteDao {
 		case 2:
 			return "Fevereiro";
 		case 3:
-			return "MarÃ§o";
+			return "Março";
 		case 4:
 			return "Abril";
 		case 5:
@@ -165,7 +165,7 @@ public class AniversarianteDao {
 			return "01";
 		case "FEVEREIRO":
 			return "02";
-		case "MARÃ‡O":
+		case "MARÇO":
 			return "03";
 		case "ABRIL":
 			return "04";
