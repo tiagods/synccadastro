@@ -3,6 +3,7 @@ package com.prolink.sync.job;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
@@ -61,21 +62,22 @@ public class MyJob implements Job {
 				Status bean = new Status(new Date(), cadastro.getTempoGravacao(), cadastro.getTempoLeitura(), erros);
 				StatusDao statusDao = new StatusDao();
 				statusDao.salvar(bean);
-
+				
+				LocalDateTime dateNow = LocalDateTime.now();
 				Calendar calendar = Calendar.getInstance();
-				if(calendar.get(Calendar.DAY_OF_WEEK)==Calendar.MONDAY && calendar.get(Calendar.HOUR_OF_DAY)<13 &&
+				if(dateNow.getDayOfWeek()==DayOfWeek.MONDAY && dateNow.getHour()<13 &&
 						!new File(cextraB.getDIRETORIO_TEMP()+"/envio"+new SimpleDateFormat("ddMMyyyy").format(new Date())+".txt").exists()){
 					new AniversarianteDao().processarEnviarAniversariantes(calendar, cextraB);
 				}
-				if(calendar.get(Calendar.DAY_OF_MONTH)==2 && calendar.get(Calendar.HOUR_OF_DAY)<13 && 
-						!new File(cextraB.getDIRETORIO_TEMP()+"/email"+new SimpleDateFormat("ddMMyyyy").format(new Date())+".txt").exists()) {
+				//aviso do prolabore mensal
+				if(dateNow.getDayOfMonth()==2 && 
+						!new File(cextraB.getDIRETORIO_TEMP()+"/prolabore"+new SimpleDateFormat("ddMMyyyy").format(new Date())+".txt").exists()) {
 					String[] idClientes = new String[] {"2361","2409"};
 					for(String cliente : idClientes) {
 						LembreteProLaboreDao lemb = new LembreteProLaboreDao();
-						lemb.enviarLembrete(new String[] {"jose.ferreira@prolinkcontabil.com.br",
-								"fernando.fonseca@prolinkcontabil.com.br",
-								"karin.fernandes@prolinkcontabil.com.br"}, 
-								new String[] {"viviane.favero@sequenza.com.br"}
+						lemb.enviarLembrete(
+								new String[] {"jose.ferreira@prolinkcontabil.com.br","fernando.fonseca@prolinkcontabil.com.br","karin.fernandes@prolinkcontabil.com.br"}, 
+								new String[] {"viviane.favero@sequenza.com.br","marcileia.ferreira@prolinkcontabil.com.br"}
 								,cliente, cextraB);
 					}
 				}
@@ -88,8 +90,7 @@ public class MyJob implements Job {
 						System.out.println("Falha ao gravar o arquivo txt: "+e.getMessage());;
 					}
 				}
-				LocalDateTime dateNow = LocalDateTime.now();
-				if(dateNow.getHour()>17 && dateNow.getDayOfMonth() <= 20){
+				if(dateNow.getHour()>7 && dateNow.getDayOfMonth() <= 20){
 					LocalDateTime localDate2 = dateNow.plusMonths(-1);
 					LocalDateTime localDate3 = dateNow.plusMonths(-2);
 					DarfsDao darfs = new DarfsDao();

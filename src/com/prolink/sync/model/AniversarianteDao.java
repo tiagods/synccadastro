@@ -137,7 +137,7 @@ public class AniversarianteDao {
 		case 2:
 			return "Fevereiro";
 		case 3:
-			return "Março";
+			return "Marï¿½o";
 		case 4:
 			return "Abril";
 		case 5:
@@ -165,7 +165,7 @@ public class AniversarianteDao {
 			return "01";
 		case "FEVEREIRO":
 			return "02";
-		case "MARÇO":
+		case "MARÃ‡O":
 			return "03";
 		case "ABRIL":
 			return "04";
@@ -245,8 +245,7 @@ public class AniversarianteDao {
 	        String mes = convertMounth(localDate.getMonthValue());
 	        String assunto = " Aniversariantes em "+mes+" - "+calendar.get(Calendar.WEEK_OF_MONTH)+"Âª semana";
 	        
-	        String[] contas = new String[]{"isabelle.souza@prolinkcontabil.com.br",
-	        		"victor.santos@prolinkcontabil.com.br"};
+	        String[] contas = new String[]{"isabelle.souza@prolinkcontabil.com.br"};
 	        String[] copias = new String[]{"tiago.dias@prolinkcontabil.com.br","monary.torres@prolinkcontabil.com.br"};
 	        //String[] contas = new String[] {"tiago.dias@prolinkcontabil.com.br"};
 	        if(email.enviaAlerta(contas, copias, assunto,
@@ -393,9 +392,7 @@ public class AniversarianteDao {
 			builder.append(token.toString().replace("{token}", an.getId()));
 			builder.append(token.toString().replace("{token}", an.getEmpresa()));
 			builder.append(token.toString().replace("{token}", an.getStatus()));
-			
 			builder.append("					</tr>");
-			
 		}
 		builder.append("</tbody>");
 		builder.append("			</table>");

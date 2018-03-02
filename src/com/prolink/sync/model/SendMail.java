@@ -13,7 +13,7 @@ public class SendMail {
     email.setSmtpPort(587);
     email.setAuthenticator( new DefaultAuthenticator( "alertas@prolinkcontabil.com.br" ,  "Js5TRgKtkARm" ) );
     try {
-        email.setFrom( "alertas@prolinkcontabil.com.br" , "Prolink Contabil");
+        email.setFrom( "alertas@prolinkcontabil.com.br" , "Alertas \\ Prolink Contabil");
         email.setSubject( titulo );
         email.setHtmlMsg( mensagem );
         for(String s : conta) email.addTo(s);

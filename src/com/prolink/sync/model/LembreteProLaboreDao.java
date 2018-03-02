@@ -1,8 +1,8 @@
 package com.prolink.sync.model;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -16,11 +16,17 @@ public class LembreteProLaboreDao {
 		
 		String message = mensagem(saudacao);
 		SendMail mail = new SendMail();
-		if(mail.enviaAlerta(conta,copias,cliente+"-Solicitação de Demonstrativos de Pró-Labore", message, null)){
+		if(mail.enviaAlerta(conta,copias,cliente+"-SolicitaÃ§Ã£o de Demonstrativos de PrÃ³-Labore", message, null)){
 			try {
-				File f = new File(cb.getDIRETORIO_TEMP()+"\\email"+new SimpleDateFormat("ddMMyyyy").format(new Date())+".txt");
+				File f = new File(cb.getDIRETORIO_TEMP()+"/prolabore"+new SimpleDateFormat("ddMMyyyy").format(new Date())+".txt");
 				f.createNewFile();
-			}catch(Exception e) {}
+				FileWriter fileWriter = new FileWriter(f);
+				fileWriter.write("E-mail prolabore enviado com sucesso!");
+				fileWriter.flush();
+				fileWriter.close();
+			}catch(Exception e) {
+				
+			}
 		}
 	}
 	
