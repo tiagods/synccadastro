@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
 <hibernate-mapping package="com.prolink.sync.model">
 <class name="CadastroBean" table="CLIENTE">
 <id name="COD" type="int"/>
@@ -88,8 +87,8 @@
 <property name="ESTD1" length="50"/>
 <property name="DATA_EXP1" length="100"/>
 <property name="CPF1" length="100"/>
-<property name="EMAIL_SOC_1" type="text"/>
-<property name="EMAIL_FINANCEIRO" type="text"/>
+<property name="EMAIL_SOC_1" length="8000"/>
+<property name="EMAIL_FINANCEIRO" length="8000"/>
 <property name="DDD1" length="50"/>
 <property name="FONERES1" length="250"/>
 <property name="RES_RAMAL_1" length="100"/>
@@ -130,6 +129,6 @@
 <property name="CELULAR2" length="100"/>
 <property name="DDD2REC" length="50"/>
 <property name="FONEREC2" length="250"/>
-<property name="OBSFONE_RC2" type="text"/>
+<property name="OBSFONE_RC2" length="8000"/>
 </class>
 </hibernate-mapping>

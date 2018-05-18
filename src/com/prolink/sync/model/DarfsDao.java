@@ -18,16 +18,16 @@ public class DarfsDao{
 	private Map<File,File> mapa = new HashMap<>();;
 	private File pathTo;
 	
-//	public static void main(String[] args) {
-//		DarfsDao darf = new DarfsDao();
-//		DarfsDao darf1 = new DarfsDao();
-//		
-//		LocalDateTime dateNow = LocalDateTime.now();
-//		LocalDateTime localDate2 = dateNow.plusMonths(-1);
-//		LocalDateTime localDate3 = dateNow.plusMonths(-2);
-//		darf.iniciar(localDate2);			
-//		darf1.iniciar(localDate3);
-//	}
+	public static void main(String[] args) {
+		DarfsDao darf = new DarfsDao();
+		DarfsDao darf1 = new DarfsDao();
+		
+		LocalDateTime dateNow = LocalDateTime.now();
+		LocalDateTime localDate2 = dateNow.plusMonths(-1);
+		LocalDateTime localDate3 = dateNow.plusMonths(-2);
+		darf.iniciar(localDate2);			
+		darf1.iniciar(localDate3);
+	}
 	
 	public void iniciar(LocalDateTime localDate2){
 		int mes = localDate2.getMonthValue();
@@ -71,14 +71,14 @@ public class DarfsDao{
 				fRelat.mkdir();
 			fw = new FileWriter(new File(fRelat.getAbsolutePath()+"\\resultado "+LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))+".csv"));
 			StringBuilder builder = new StringBuilder();
-			builder.append("Localização");
+			builder.append("Localicao");
 			builder.append(";");
 			builder.append("Destino");
 			builder.append(System.getProperty("line.separator"));
 			mapa.keySet().forEach(c->{
 				builder.append(c.getAbsolutePath());
 				builder.append(";");
-				builder.append(mapa.get(c)==null?"Nção foi possivel localizar a pasta Prolink Digital":mapa.get(c).getAbsolutePath());
+				builder.append(mapa.get(c)==null?"Nao foi possivel localizar a pasta Prolink Digital":mapa.get(c).getAbsolutePath());
 				builder.append(System.getProperty("line.separator"));
 			});
 			fw.write(builder.toString());
@@ -121,6 +121,7 @@ public class DarfsDao{
             Path pathO = Paths.get(fileFinal.getAbsolutePath());
             try {
 				Files.copy(pathI, pathO, StandardCopyOption.REPLACE_EXISTING);
+				System.out.println("Copiando: "+pathI.toAbsolutePath()+" to "+pathO.toAbsolutePath());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

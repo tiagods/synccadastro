@@ -27,7 +27,7 @@ public class IniciarServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ControllerJob controller = ControllerJob.getInstance();
 		controller.stopJob();
-		//salvar novo parametro de configuraÃ§Ã£o
+		//salvar novo parametro de configuração
 		controller.restartJob();
 	}
 

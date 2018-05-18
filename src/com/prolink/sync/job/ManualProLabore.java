@@ -16,15 +16,20 @@ public class ManualProLabore {
 		ConfExtraBean cextraB = new ConfExtraBean();
 		cextraB.setDIRETORIO_TEMP("c:\\TEMP");
 		LocalDateTime dateNow = LocalDateTime.now();
-		if(dateNow.getDayOfMonth()==2 && 
+		if(dateNow.getDayOfMonth()==3 && 
 				!new File(cextraB.getDIRETORIO_TEMP()+"/prolabore"+new SimpleDateFormat("ddMMyyyy").format(new Date())+".txt").exists()) {
-			String[] idClientes = new String[] {"2361","2409"};
+			String[] idClientes = new String[] {"2361 e 2409"};
 			for(String cliente : idClientes) {
+				
 				LembreteProLaboreDao lemb = new LembreteProLaboreDao();
 				lemb.enviarLembrete(
 						new String[] {"jose.ferreira@prolinkcontabil.com.br","fernando.fonseca@prolinkcontabil.com.br","karin.fernandes@prolinkcontabil.com.br"}, 
 						new String[] {"viviane.favero@sequenza.com.br","marcileia.ferreira@prolinkcontabil.com.br"}
 						,cliente, cextraB);
+//				lemb.enviarLembrete(
+//						new String[] {"tiago.dias@prolinkcontabil.com.br"}, 
+//						new String[] {"suporte.ti@prolinkcontabil.com.br"}
+//						,cliente, cextraB);
 			}
 		}
 	}

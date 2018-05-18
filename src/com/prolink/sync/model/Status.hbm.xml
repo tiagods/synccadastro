@@ -4,13 +4,13 @@
 <!-- Tiago Dias
 -->
 <hibernate-mapping package="com.prolink.sync.model">
-	<class name="Status" table="cad_upgrade_status">
-	 	<id name="COD" column="cod" type="int">
+	<class name="Status" table="STATUS">
+	 	<id name="COD" type="int">
 	 		<generator class="identity" />
 	 	</id>
-	 	<property name="DATA" column="data" type="java.util.Date" />
-	 	<property name="TEMPOLEITURA" column="tempo_leitura" type="long" />
-	 	<property name="TEMPOGRAVACAO" column="tempo_gravacao" type="long" />
-	 	<property name="DETALHES" column="detalhes"/>
+	 	<property name="DATA" type="java.util.Date" />
+	 	<property name="TEMPOLEITURA" type="long" />
+	 	<property name="TEMPOGRAVACAO" type="long" />
+	 	<property name="DETALHES" />
 	 </class>
 </hibernate-mapping>

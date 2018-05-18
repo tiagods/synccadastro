@@ -7,15 +7,19 @@ import com.prolink.sync.model.ConfExtraBean;
 import com.prolink.sync.model.ConfExtraDao;
 
 public class ManualAniversariantes {
-
 	public static void main(String[] args) {
-		System.out.println(System.getProperty("os.name"));
+		// TODO Auto-generated method stub
+		try {
 		ConfExtraDao cextraDao = new ConfExtraDao();
 		ConfExtraBean cextraB = cextraDao.readConfigurations();
+		System.out.println("Iniciando envio");
 		Calendar calendar = Calendar.getInstance();
 		new AniversarianteDao().processarEnviarAniversariantes(calendar, cextraB);
 		System.out.println("Pronto");
 		System.exit(0);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

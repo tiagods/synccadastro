@@ -30,7 +30,7 @@ public class HibernateFactory {
 	}
 	//retornando apenas 1 objeto
 	public Object getObject(Session session, Object object){
-		return session.createQuery("from "+object).list();
+		return session.createQuery("from "+object).getFirstResult();
 	}
 	//salvar ou atualiza
 	public String  saveOrUpdateSession(Session session, Object object){

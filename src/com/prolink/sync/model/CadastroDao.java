@@ -87,7 +87,7 @@ public class CadastroDao {
 				HSSFCell celula = (HSSFCell)columns.next();
 				if(row.getRowNum()!=0 && celula.getColumnIndex()==0){
 					try{
-						Integer.parseInt(readingCell(celula).trim());//se nï¿½o conseguir o cast, o campo codigo estara em branco, nesse caso o for ira fechar
+						Integer.parseInt(readingCell(celula).trim());//se não conseguir o cast, o campo codigo estara em branco, nesse caso o for ira fechar
 					}catch(NumberFormatException e){
 						stop=true;
 						break;
@@ -655,7 +655,6 @@ public class CadastroDao {
 		try{
 			local = new FileInputStream(cb.getPLANILHA_LOCALIZACAO()+"/"+cb.getPLANILHA_NOME());
 			destino = new FileOutputStream(cb.getDIRETORIO_TEMP()+"/"+cb.getPLANILHA_NOME());
-			
 			entrada = local.getChannel();
 			saida = destino.getChannel();
 			entrada.transferTo(0, entrada.size(), saida);

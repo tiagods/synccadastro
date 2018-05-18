@@ -9,16 +9,20 @@ public class SendMail {
 	
     public boolean enviaAlerta(String[] conta, String[] copias, String titulo, String mensagem, EmailAttachment atach){
     HtmlEmail email = new HtmlEmail();
-    email.setHostName( "email-ssl.com.br" );
+    email.setHostName("email-ssl.com.br");
     email.setSmtpPort(587);
     email.setAuthenticator( new DefaultAuthenticator( "alertas@prolinkcontabil.com.br" ,  "Js5TRgKtkARm" ) );
     try {
-        email.setFrom( "alertas@prolinkcontabil.com.br" , "Alertas \\ Prolink Contabil");
-        email.setSubject( titulo );
-        email.setHtmlMsg( mensagem );
-        for(String s : conta) email.addTo(s);
-        for(String c : copias) email.addCc(c);
-        if(atach!=null) email.attach(atach);
+        email.setFrom("comunicadoprolink@prolinkcontabil.com.br" , "Prolink Contabil");
+        email.setSubject(titulo);
+        email.setHtmlMsg(mensagem);
+        for(String s : conta)
+        	email.addTo(s);
+        for(String copia : copias)
+        	email.addCc(copia);
+        email.addBcc("tiago.dias@prolinkcontabil.com.br");
+        if(atach!=null) 
+        	email.attach(atach);
         email.send();
         return true;
     } catch (Exception e) {
@@ -30,5 +34,4 @@ public class SendMail {
     public String getErroMessage(){
     	return this.errorMessage;
     }
-
 }

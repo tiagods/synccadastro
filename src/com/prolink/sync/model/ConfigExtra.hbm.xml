@@ -4,7 +4,7 @@
 <!-- Tiago Dias
 -->
 <hibernate-mapping package="com.prolink.sync.model">
-	<class name="ConfExtraBean" table="cad_upgrade_planilha_config">
+	<class name="ConfExtraBean" table="PLANILHA_CONFIG">
 		<id name="CODIGO" column="CODIGO" type="int">
 			<generator class="identity" />
 		</id>

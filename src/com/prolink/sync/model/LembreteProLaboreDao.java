@@ -16,7 +16,7 @@ public class LembreteProLaboreDao {
 		
 		String message = mensagem(saudacao);
 		SendMail mail = new SendMail();
-		if(mail.enviaAlerta(conta,copias,cliente+"-SolicitaÃ§Ã£o de Demonstrativos de PrÃ³-Labore", message, null)){
+		if(mail.enviaAlerta(conta,copias,cliente+"-Solicitação de Recibo de Pró-labore e Demonstrativo GFIP", message, null)){
 			try {
 				File f = new File(cb.getDIRETORIO_TEMP()+"/prolabore"+new SimpleDateFormat("ddMMyyyy").format(new Date())+".txt");
 				f.createNewFile();
@@ -44,8 +44,7 @@ public class LembreteProLaboreDao {
 		sb.append("Bom dia,");
 		sb.append("				</h3>");
 		sb.append("			</div>");
-		sb.append("			<p>");
-		sb.append("				Solicito o envio dos demonstrativos de Pr&oacute;-Labore do m&ecirc;s para a empresa acima citada.</p>");
+		sb.append("			<h4>Solicito o envio dos recibos de Pr&oacute;-Labore e Demonstrativos GFIP do m&ecirc;s para as empresas acima citadas.</h4>");
 		sb.append("			<div class=\"page-footer\">");
 		sb.append("				<br />");
 		sb.append("				<h4 style=\"text-align:center;\">");

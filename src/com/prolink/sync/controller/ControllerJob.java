@@ -68,7 +68,7 @@ public class ControllerJob {
 		else
 			return null;
 	}
-	//startando serviÃ§o
+	//startando serviço
 	public void startJob(){
 		String scheduling = rescueSchedulingBD();
 		if(scheduling!=null)
@@ -76,7 +76,7 @@ public class ControllerJob {
 		else
 			System.out.println("Nao foi possivel receber os paramentros de trabalho!");
 	}
-	//restartando serviÃ§o
+	//restartando serviço
 	public void restartJob(){
 		String scheduling = rescueSchedulingBD();
 		if(scheduling != null){

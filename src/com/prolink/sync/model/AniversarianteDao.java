@@ -32,7 +32,7 @@ public class AniversarianteDao {
 			instance = new AniversarianteDao();
 		return instance;
 	}
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "deprecation", "unchecked" })
 	public List<Aniversariante> receberAniversariantes(){
 		HibernateFactory factory = new HibernateFactory();
 		Session session = factory.getSession();
@@ -49,7 +49,7 @@ public class AniversarianteDao {
 		lista.add(sexta);
 		lista.add(sabado);
 		lista.add(domingo);
-		String[] a = new String[]{"PLATINA","PRATA 2","OURO 3","OURO 2","PRATA 3","OURO 1","BRONZE","PRATA 1","Exceção","Inativa","Em andamento"};
+		String[] a = new String[]{"PLATINA","PRATA 2","OURO 3","OURO 2","PRATA 3","OURO 1","BRONZE","PRATA 1","Exce��o","Inativa","Em andamento"};
 		List<String> filtroStatus = new ArrayList<String>();
 		for(String t : a)
 			filtroStatus.add(t);
@@ -69,27 +69,25 @@ public class AniversarianteDao {
 			criteria.add(Restrictions.eq("MES_NASC1", convertMounth(d.getMonthValue()).toLowerCase()));
 			criteria.add(Restrictions.in("STATUS", filtroStatus));
 			List<CadastroBean> object = (List<CadastroBean>)criteria.list();
-			if(!object.isEmpty()){
-				object.forEach(c->{
-					Aniversariante aniversariante = new Aniversariante();
-					aniversariante.setId(String.valueOf(c.getCOD()));
-					aniversariante.setStatus(c.getSTATUS());
-					aniversariante.setEmpresa(c.getEMPRESA());
-					aniversariante.setNome(c.getNOME_SOCIO1());
-					aniversariante.setAniversario(c.getDIA_NASC1()+"/"+convertMounth(c.getMES_NASC1()));
-					aniversariante.setEmail(c.getEMAIL_SOC_1());
-					String listaFones = "";
-					if(c.getFONECOML1().trim().equals("") && !c.getCELULAR().trim().equals(""))
-						listaFones = c.getDDD1CEL()+" "+c.getCELULAR();
-					else if(!c.getFONECOML1().trim().equals("") && c.getCELULAR().trim().equals(""))
-						listaFones = c.getDDD1COML()+" "+c.getFONECOML1();
-					else if(!c.getFONECOML1().trim().equals("") && !c.getCELULAR().trim().equals(""))
-						listaFones = c.getDDD1COML()+" "+c.getFONECOML1()+","+c.getDDD1CEL()+" "+c.getCELULAR();
-					aniversariante.setTelefone(listaFones);
-					aniversariante.setTipoSocio(1);
-					aniversariantes.add(aniversariante);
-				});
-			} 
+			object.forEach(c->{
+				Aniversariante aniversariante = new Aniversariante();
+				aniversariante.setId(String.valueOf(c.getCOD()));
+				aniversariante.setStatus(c.getSTATUS());
+				aniversariante.setEmpresa(c.getEMPRESA());
+				aniversariante.setNome(c.getNOME_SOCIO1());
+				aniversariante.setAniversario(c.getDIA_NASC1()+"/"+convertMounth(c.getMES_NASC1()));
+				aniversariante.setEmail(c.getEMAIL_SOC_1());
+				String listaFones = "";
+				if(c.getFONECOML1().trim().equals("") && !c.getCELULAR().trim().equals(""))
+					listaFones = c.getDDD1CEL()+" "+c.getCELULAR();
+				else if(!c.getFONECOML1().trim().equals("") && c.getCELULAR().trim().equals(""))
+					listaFones = c.getDDD1COML()+" "+c.getFONECOML1();
+				else if(!c.getFONECOML1().trim().equals("") && !c.getCELULAR().trim().equals(""))
+					listaFones = c.getDDD1COML()+" "+c.getFONECOML1()+","+c.getDDD1CEL()+" "+c.getCELULAR();
+				aniversariante.setTelefone(listaFones);
+				aniversariante.setTipoSocio(1);
+				aniversariantes.add(aniversariante);
+			}); 
 			session.clear();
 //			hql = "FROM CadastroBean as c where c.DIA_NASC2 "
 //					+ "= :dayOfMounth "
@@ -103,27 +101,25 @@ public class AniversarianteDao {
 			criteria.add(Restrictions.eq("MES_NASC2", convertMounth(d.getMonthValue()).toLowerCase()));
 			criteria.add(Restrictions.in("STATUS", filtroStatus));
 			List<CadastroBean> object2 = (List<CadastroBean>)criteria.list();
-			if(!object2.isEmpty()){
-				object2.forEach(c->{
-					Aniversariante aniversariante = new Aniversariante();
-					aniversariante.setId(String.valueOf(c.getCOD()));
-					aniversariante.setStatus(c.getSTATUS());
-					aniversariante.setEmpresa(c.getEMPRESA());
-					aniversariante.setNome(c.getNOME_SOC_2());
-					aniversariante.setAniversario(c.getDIA_NASC2()+"/"+convertMounth(c.getMES_NASC2()));
-					aniversariante.setEmail(c.getEMAIL_SOC_1());
-					aniversariante.setTipoSocio(2);
-					String listaFones2 = "";
-					if(c.getFONECOM2().trim().equals("") && !c.getCELULAR2().trim().equals(""))
-						listaFones2 = c.getDDD2CEL()+" "+c.getCELULAR2();
-					else if(!c.getFONECOM2().trim().equals("") && c.getCELULAR2().trim().equals(""))
-						listaFones2 = c.getDDD2COML()+" "+c.getFONECOM2();
-					else if(!c.getFONECOM2().trim().equals("") && !c.getCELULAR2().trim().equals(""))
-						listaFones2 = c.getDDD2COML()+" "+c.getFONECOM2()+","+c.getDDD2CEL()+" "+c.getCELULAR2();
-					aniversariante.setTelefone(listaFones2);
-					aniversariantes.add(aniversariante);
-				});
-			}
+			object2.forEach(c->{
+				Aniversariante aniversariante = new Aniversariante();
+				aniversariante.setId(String.valueOf(c.getCOD()));
+				aniversariante.setStatus(c.getSTATUS());
+				aniversariante.setEmpresa(c.getEMPRESA());
+				aniversariante.setNome(c.getNOME_SOC_2());
+				aniversariante.setAniversario(c.getDIA_NASC2()+"/"+convertMounth(c.getMES_NASC2()));
+				aniversariante.setEmail(c.getEMAIL_SOC_1());
+				aniversariante.setTipoSocio(2);
+				String listaFones2 = "";
+				if(c.getFONECOM2().trim().equals("") && !c.getCELULAR2().trim().equals(""))
+					listaFones2 = c.getDDD2CEL()+" "+c.getCELULAR2();
+				else if(!c.getFONECOM2().trim().equals("") && c.getCELULAR2().trim().equals(""))
+					listaFones2 = c.getDDD2COML()+" "+c.getFONECOM2();
+				else if(!c.getFONECOM2().trim().equals("") && !c.getCELULAR2().trim().equals(""))
+					listaFones2 = c.getDDD2COML()+" "+c.getFONECOM2()+","+c.getDDD2CEL()+" "+c.getCELULAR2();
+				aniversariante.setTelefone(listaFones2);
+				aniversariantes.add(aniversariante);
+			});
 			session.clear();
 		}
 		factory.closeSession(session);
@@ -137,7 +133,7 @@ public class AniversarianteDao {
 		case 2:
 			return "Fevereiro";
 		case 3:
-			return "Mar�o";
+			return "Mar�o";
 		case 4:
 			return "Abril";
 		case 5:
@@ -165,7 +161,7 @@ public class AniversarianteDao {
 			return "01";
 		case "FEVEREIRO":
 			return "02";
-		case "MARÇO":
+		case "MAR�O":
 			return "03";
 		case "ABRIL":
 			return "04";
@@ -233,6 +229,8 @@ public class AniversarianteDao {
 	}
 	public void processarEnviarAniversariantes(Calendar calendar, ConfExtraBean cextraB){
 		List<Aniversariante> aniversariantes = receberAniversariantes();
+		System.out.println("Aniversariantes total:"+aniversariantes.size()
+		);
 		File file = gerarExcel(aniversariantes.iterator(), cextraB);
 		if(file!=null){
 	        EmailAttachment attachment = new EmailAttachment();
@@ -243,12 +241,12 @@ public class AniversarianteDao {
 	        SendMail email = new SendMail();
 	        LocalDate localDate = LocalDate.now();
 	        String mes = convertMounth(localDate.getMonthValue());
-	        String assunto = " Aniversariantes em "+mes+" - "+calendar.get(Calendar.WEEK_OF_MONTH)+"ª semana";
-	        
-	        String[] contas = new String[]{"isabelle.souza@prolinkcontabil.com.br"};
-	        String[] copias = new String[]{"tiago.dias@prolinkcontabil.com.br","monary.torres@prolinkcontabil.com.br"};
+	        String assunto = " Aniversariantes em "+mes+" - "+calendar.get(Calendar.WEEK_OF_MONTH)+"� semana";
+	        String[] contas = new String[]{"isabelle.souza@prolinkcontabil.com.br","monary.torres@prolinkcontabil.com.br",
+	        		"leandro.marques@prolinkcontabil.com.br","tiago.dias@prolinkcontabil.com.br"};
 	        //String[] contas = new String[] {"tiago.dias@prolinkcontabil.com.br"};
-	        if(email.enviaAlerta(contas, copias, assunto,
+	        String[] copias = new String[] {"suporte.ti@prolinkcontabil.com.br"};
+	        if(email.enviaAlerta(contas,copias, assunto,
 	        		emailAniversariante(aniversariantes), attachment))
 	        	file.delete();
 		}
@@ -324,6 +322,7 @@ public class AniversarianteDao {
 	}
 	public String emailAniversariante(List<Aniversariante> lista){
 		StringBuilder builder = new StringBuilder();
+
 		builder.append("<!DOCTYPE html>");
 		builder.append("<html lang=\"pt-br\">");
 		builder.append("	<head>");
@@ -392,7 +391,9 @@ public class AniversarianteDao {
 			builder.append(token.toString().replace("{token}", an.getId()));
 			builder.append(token.toString().replace("{token}", an.getEmpresa()));
 			builder.append(token.toString().replace("{token}", an.getStatus()));
+			
 			builder.append("					</tr>");
+			
 		}
 		builder.append("</tbody>");
 		builder.append("			</table>");

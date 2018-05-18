@@ -3,7 +3,6 @@ package com.prolink.sync.job;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,7 +20,6 @@ import com.prolink.sync.model.ComentarioDao;
 import com.prolink.sync.model.ConfExtraBean;
 import com.prolink.sync.model.ConfExtraDao;
 import com.prolink.sync.model.DarfsDao;
-import com.prolink.sync.model.LembreteProLaboreDao;
 import com.prolink.sync.model.Status;
 import com.prolink.sync.model.StatusDao;
 
@@ -57,29 +55,16 @@ public class MyJob implements Job {
 				String erros = cadastro.getErros();
 				if(erros.length()>10){
 					gerarTxt=true;
-					erros = "Foi gerado um arquivo txt com os dados nao salvos";
+					erros = "Foi gerado um arquivo txt com os dados não salvos";
 				}
 				Status bean = new Status(new Date(), cadastro.getTempoGravacao(), cadastro.getTempoLeitura(), erros);
 				StatusDao statusDao = new StatusDao();
 				statusDao.salvar(bean);
-				
-				LocalDateTime dateNow = LocalDateTime.now();
+
 				Calendar calendar = Calendar.getInstance();
-				if(dateNow.getDayOfWeek()==DayOfWeek.MONDAY && dateNow.getHour()<13 &&
+				if(calendar.get(Calendar.DAY_OF_WEEK)==Calendar.MONDAY && calendar.get(Calendar.HOUR_OF_DAY)<13 &&
 						!new File(cextraB.getDIRETORIO_TEMP()+"/envio"+new SimpleDateFormat("ddMMyyyy").format(new Date())+".txt").exists()){
 					new AniversarianteDao().processarEnviarAniversariantes(calendar, cextraB);
-				}
-				//aviso do prolabore mensal
-				if(dateNow.getDayOfMonth()==2 && 
-						!new File(cextraB.getDIRETORIO_TEMP()+"/prolabore"+new SimpleDateFormat("ddMMyyyy").format(new Date())+".txt").exists()) {
-					String[] idClientes = new String[] {"2361","2409"};
-					for(String cliente : idClientes) {
-						LembreteProLaboreDao lemb = new LembreteProLaboreDao();
-						lemb.enviarLembrete(
-								new String[] {"jose.ferreira@prolinkcontabil.com.br","fernando.fonseca@prolinkcontabil.com.br","karin.fernandes@prolinkcontabil.com.br"}, 
-								new String[] {"viviane.favero@sequenza.com.br","marcileia.ferreira@prolinkcontabil.com.br"}
-								,cliente, cextraB);
-					}
 				}
 				builder.append("Processo concluido em : "+(fim-inicio)+" ms");
 				if(gerarTxt){
@@ -90,7 +75,8 @@ public class MyJob implements Job {
 						System.out.println("Falha ao gravar o arquivo txt: "+e.getMessage());;
 					}
 				}
-				if(dateNow.getHour()>7 && dateNow.getDayOfMonth() <= 20){
+				LocalDateTime dateNow = LocalDateTime.now();
+				if(dateNow.getHour()>17 && dateNow.getDayOfMonth() <= 20){
 					LocalDateTime localDate2 = dateNow.plusMonths(-1);
 					LocalDateTime localDate3 = dateNow.plusMonths(-2);
 					DarfsDao darfs = new DarfsDao();
