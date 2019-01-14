@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.prolink.synccadastro.model.NotificacaoEnvio;
@@ -24,17 +26,17 @@ import com.prolink.synccadastro.services.NotificacaoService;
 
 
 @Component
-public class NotificacaoJob implements Job{
+@EnableScheduling
+public class NotificacaoJob{
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired
 	private NotificacaoService notificacao;
 	@Autowired 
 	private JavaMailSender mailSender;
 	
-	@Override
-	public void execute(JobExecutionContext context) throws JobExecutionException {
-		logger.info("Job ** {} ** fired @ {}", context.getJobDetail().getKey().getName(), context.getFireTime());
-		
+	@Scheduled(cron="0 0 * * * *")
+	public void execute() {
+		logger.debug("Iniciando..."+LocalDateTime.now());
 		notificacao.analisar();
 	    List<NotificacaoEnvio> ne = notificacao.pendentes();
 	    for(NotificacaoEnvio n : ne) {
@@ -57,9 +59,9 @@ public class NotificacaoJob implements Job{
 				logger.debug("Send ok - "+n.getId()+" - "+LocalDateTime.now());
 			} catch (NullPointerException | MailException | MessagingException | UnsupportedEncodingException e) {
 				logger.error(e.getMessage());
+				e.printStackTrace();
 			}
 	    }
-	    
-		logger.info("Next job scheduled @ {}", context.getNextFireTime());
+	    logger.debug("Fim da execucao: "+LocalDateTime.now());
 	}
 }
