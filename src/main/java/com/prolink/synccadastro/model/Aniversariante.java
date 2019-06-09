@@ -3,6 +3,8 @@ package com.prolink.synccadastro.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Aniversariante implements Serializable{
 	/**
 	 * 
@@ -16,6 +18,7 @@ public class Aniversariante implements Serializable{
 	private String email;
 	private String telefone;
 	private int tipoSocio;
+	@JsonIgnore
 	private LocalDate data;
 	/**
 	 * @return the nome
