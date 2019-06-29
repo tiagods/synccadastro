@@ -12,7 +12,6 @@ target/*
 .mtj.tmp/
 
 #Security
-*.properties
 */application.properties
 WebSecurityConfig.java
 
