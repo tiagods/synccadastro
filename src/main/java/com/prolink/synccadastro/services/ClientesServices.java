@@ -55,14 +55,21 @@ public class ClientesServices {
 	}
 
 	public void iniciarAtualizacao() {
-		if (workbooks.validateExtension(origemPlanilha)) {
-			try {
-				workbooks.copyWorkbook(origemPlanilha, destinoPlanilha);
-				List<Cliente> clientes = workbooks.readWorkbook(destinoPlanilha);
-				workbooks.removeTempWorkbook(destinoPlanilha);
-				salvar(clientes);
-			} catch (Exception e) {
-				logger.error(e.getMessage());
+		synchronized (workbooks) {
+			if (workbooks.validateExtension(origemPlanilha)) {
+				File diretorio = new File(destinoPlanilha); 
+				if(!diretorio.exists()) diretorio.mkdir();
+				Random random = new Random();
+				String value = String.valueOf(random.nextInt(900000));
+				try {
+					destinoPlanilha = destinoPlanilha+"/Cadastro"+value+".xls";	
+					workbooks.copyWorkbook(origemPlanilha, destinoPlanilha);
+					List<Cliente> clientes = workbooks.readWorkbook(destinoPlanilha);
+					workbooks.removeTempWorkbook(destinoPlanilha);
+					salvar(clientes);
+				} catch (Exception e) {
+					logger.error(e.getMessage());
+				}
 			}
 		}
 	}
