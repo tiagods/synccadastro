@@ -1,11 +1,8 @@
 package com.prolink.synccadastro.services;
 
+import java.io.File;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +54,7 @@ public class ClientesServices {
 	public void iniciarAtualizacao() {
 		synchronized (workbooks) {
 			if (workbooks.validateExtension(origemPlanilha)) {
-				File diretorio = new File(destinoPlanilha); 
+				File diretorio = new File(destinoPlanilha);
 				if(!diretorio.exists()) diretorio.mkdir();
 				Random random = new Random();
 				String value = String.valueOf(random.nextInt(900000));
