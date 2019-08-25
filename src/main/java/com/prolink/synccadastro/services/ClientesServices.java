@@ -2,6 +2,8 @@ package com.prolink.synccadastro.services;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import org.slf4j.Logger;
@@ -44,11 +46,10 @@ public class ClientesServices {
 	public void salvar(Cliente cliente) {
 		clientes.save(cliente);
 	}
+
+	@Transactional
 	public void salvar(List<Cliente> cls) {
-		//clientes.save(cls);
-		for(Cliente c : cls) {
-			if(c.getCOD()!=0) clientes.saveAndFlush(c);
-		}
+		clientes.saveAll(cls);
 	}
 
 	public void iniciarAtualizacao() {
@@ -56,12 +57,13 @@ public class ClientesServices {
 			if (workbooks.validateExtension(origemPlanilha)) {
 				File diretorio = new File(destinoPlanilha);
 				if(!diretorio.exists()) diretorio.mkdir();
-				Random random = new Random();
-				String value = String.valueOf(random.nextInt(900000));
+				String valor = LocalDateTime.now().format(DateTimeFormatter.ofPattern("ddMMyyyyHHmmss"));
 				try {
-					destinoPlanilha = destinoPlanilha+"/Cadastro"+value+".xls";	
-					workbooks.copyWorkbook(origemPlanilha, destinoPlanilha);
-					List<Cliente> clientes = workbooks.readWorkbook(destinoPlanilha);
+					String novaPlanilha = destinoPlanilha+"/Cadastro"+valor+".xls";
+					workbooks.copyWorkbook(origemPlanilha, novaPlanilha);
+					List<Cliente> clientes = workbooks.readWorkbook(novaPlanilha);
+					Optional<Cliente> result = clientes.stream().filter(c-> c.getCOD()==0).findFirst();
+					if(result.isPresent()) clientes.remove(result.get());
 					workbooks.removeTempWorkbook(destinoPlanilha);
 					salvar(clientes);
 				} catch (Exception e) {
@@ -83,13 +85,8 @@ public class ClientesServices {
 		aniversariantes.addAll(processarAniversariantes2(clientes2));
 		logger.info("Aniversariantes "+aniversariantes.size());
 		
-		Comparator<Aniversariante> comparator = new Comparator<Aniversariante>() {
-			@Override
-			public int compare(Aniversariante o1, Aniversariante o2) {
-				return o1.getData().compareTo(o2.getData());
-			}
-		};
-		Collections.sort(aniversariantes, comparator);
+		Comparator<Aniversariante> comparator = Comparator.comparing(Aniversariante::getData);
+		Collections.sort(aniversariantes, comparator.thenComparing(c->c.getId()).thenComparing(c->c.getStatus()));
 		return aniversariantes;
 	}
 	

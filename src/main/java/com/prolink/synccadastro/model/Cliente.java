@@ -14,9 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -155,7 +153,7 @@ public class Cliente implements Serializable {
 	private Calendar ultimaVersao;
 	@OneToOne(mappedBy = "cliente", cascade = CascadeType.ALL)
 	private ClienteComentario comentario;
-	
+
 	@PrePersist
 	private void preInsercao() {
 		criadoEm = Calendar.getInstance();
