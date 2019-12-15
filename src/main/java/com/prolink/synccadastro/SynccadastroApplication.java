@@ -11,4 +11,5 @@ public class SynccadastroApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SynccadastroApplication.class, args);
 	}
+
 }

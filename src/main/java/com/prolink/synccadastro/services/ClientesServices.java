@@ -4,37 +4,42 @@ import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.prolink.synccadastro.model.Aniversariante;
 import com.prolink.synccadastro.model.Cliente;
 import com.prolink.synccadastro.repository.Clientes;
-import com.prolink.synccadastro.services.workbook.WorkbookServices;
 import com.prolink.synccadastro.util.LocalDateConversor;
+import com.prolink.synccadastro.util.UtilWorkbook;
 
 @Service
-@PropertySource("classpath:arquivos.properties")
 public class ClientesServices {
 
 	Logger logger = LoggerFactory.getLogger(getClass());
 
-	@Value("${origem.planilha}")
+	@Value("${planilha.origem}")
 	private String origemPlanilha;
-	@Value("${destino.planilha}")
+	@Value("${planilha.destino}")
 	private String destinoPlanilha;
 
 	@Autowired
 	private Clientes clientes;
 	@Autowired
-	private WorkbookServices workbooks;
+	private ClientesServicesNs clienteNs;
+	@Autowired
+	private UtilWorkbook workbooks;
 	@Autowired
 	private LocalDateConversor conversores;
 
@@ -66,6 +71,7 @@ public class ClientesServices {
 					if(result.isPresent()) clientes.remove(result.get());
 					workbooks.removeTempWorkbook(destinoPlanilha);
 					salvar(clientes);
+					clienteNs.atualizar(clientes,false);
 				} catch (Exception e) {
 					logger.error(e.getMessage());
 				}

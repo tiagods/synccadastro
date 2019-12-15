@@ -1,10 +1,18 @@
-package com.prolink.synccadastro.services.workbook;
+package com.prolink.synccadastro.util;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.hssf.record.crypto.Biff8EncryptionKey;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -20,20 +28,18 @@ import org.apache.poi.ss.usermodel.Row;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.prolink.synccadastro.model.Cliente;
 import com.prolink.synccadastro.model.ClienteComentario;
-import org.springframework.util.FileSystemUtils;
 
-@Service
-@PropertySource("classpath:arquivos.properties")
-public class WorkbookServices {
+@Component
+public class UtilWorkbook {
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Value("${senha.planilha}")
+    @Value("${planilha.senha}")
     private String senha;
 
     public List<Cliente> readWorkbook(String caminho) throws IOException {

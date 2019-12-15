@@ -4,9 +4,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class LocalDateConversor {
     public List<LocalDate> tratarDias() {
         List<LocalDate> lista = new ArrayList<>();
