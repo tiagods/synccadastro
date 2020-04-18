@@ -1,6 +1,7 @@
 package com.prolink.synccadastro.util;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class LocalDateConversor {
+    public String fomatarMD(LocalDate date){
+        return date.format(DateTimeFormatter.ofPattern("MM/dd"));
+    }
+
     public List<LocalDate> tratarDias() {
         List<LocalDate> lista = new ArrayList<>();
         LocalDate hoje = LocalDate.now();

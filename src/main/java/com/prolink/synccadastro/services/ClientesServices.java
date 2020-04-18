@@ -4,12 +4,9 @@ import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,8 +64,7 @@ public class ClientesServices {
 					String novaPlanilha = destinoPlanilha+"/Cadastro"+valor+".xls";
 					workbooks.copyWorkbook(origemPlanilha, novaPlanilha);
 					List<Cliente> clientes = workbooks.readWorkbook(novaPlanilha);
-					Optional<Cliente> result = clientes.stream().filter(c-> c.getCOD()==0).findFirst();
-					if(result.isPresent()) clientes.remove(result.get());
+					clientes.stream().filter(c-> c.getCOD()==0).findFirst().ifPresent(clientes::remove);
 					workbooks.removeTempWorkbook(destinoPlanilha);
 					salvar(clientes);
 					clienteNs.atualizar(clientes,false);
@@ -80,80 +76,82 @@ public class ClientesServices {
 	}
 
 	public List<Aniversariante> getAniversariantes() {
+
 		List<Aniversariante> aniversariantes = new ArrayList<>();
 		List<LocalDate> lista = conversores.tratarDias();
-		String[] a = new String[] { "PLATINA", "PRATA 2", "OURO 3", "OURO 2", "PRATA 3", "OURO 1", "BRONZE", "PRATA 1",
-				"Exceção", "Inativa", "Em andamento" };
-		List<String> filtroStatus = Arrays.asList(a);
-		List<Cliente> clientes1 = clientes.listarAniversariantes(lista, filtroStatus, "DIA_NASC1","MES_NASC1");
-		aniversariantes.addAll(processarAniversariantes1(clientes1));
-		List<Cliente> clientes2 = clientes.listarAniversariantes(lista, filtroStatus,"DIA_NASC2","MES_NASC2");
-		aniversariantes.addAll(processarAniversariantes2(clientes2));
+		List<String> filtroStatus = Arrays.asList( "PLATINA", "PRATA 2", "OURO 3", "OURO 2", "PRATA 3", "OURO 1", "BRONZE", "PRATA 1",
+				"Exceção", "Inativa", "Em andamento");
+		Stream.of(
+				processarAniversariantes(
+						Aniversariante.Socio.SOCIO1,
+						clientes.listarAniversariantes(lista, filtroStatus, "DIA_NASC1", "MES_NASC1")),
+				processarAniversariantes(Aniversariante.Socio.SOCIO2,
+						clientes.listarAniversariantes(lista, filtroStatus, "DIA_NASC2", "MES_NASC2"))
+		)
+				.forEach(aniversariantes::addAll);
+
 		logger.info("Aniversariantes "+aniversariantes.size());
-		
 		Comparator<Aniversariante> comparator = Comparator.comparing(Aniversariante::getData);
 		Collections.sort(aniversariantes, comparator.thenComparing(c->c.getId()).thenComparing(c->c.getStatus()));
 		return aniversariantes;
 	}
 	
-	private List<Aniversariante> processarAniversariantes1(List<Cliente> clientes1) {
+	private List<Aniversariante> processarAniversariantes(Aniversariante.Socio socio, List<Cliente> clientes) {
+
 		List<Aniversariante> aniversariantes = new ArrayList<>();
-		clientes1.forEach(c -> {
-			int dia = Integer.parseInt(c.getDIA_NASC1());
-			int mes = Integer.parseInt(conversores.convertMounth(c.getMES_NASC1()));
-			LocalDate localDate = LocalDate.
-					of(00, mes, dia);
-			
+		clientes.forEach(c -> {
 			Aniversariante aniversariante = new Aniversariante();
 			aniversariante.setId(String.valueOf(c.getCOD()));
 			aniversariante.setStatus(c.getSTATUS());
 			aniversariante.setEmpresa(c.getEMPRESA());
-			aniversariante.setNome(c.getNOME_SOCIO1());
-			aniversariante.setAniversario(dia+ "/" + mes);
+			aniversariante.setTipoSocio(socio.getValor());
 			aniversariante.setEmail(c.getEMAIL_SOC_1());
+
+			LocalDate localDate = null;
+
+			if(socio.equals(Aniversariante.Socio.SOCIO1)) {
+				localDate = recuperarData(c.getDIA_NASC1(), conversores.convertMounth(c.getMES_NASC1()));
+				aniversariante.setNome(c.getNOME_SOCIO1());
+				aniversariante.setTelefone(montarTelefone1(c));
+			} else {
+				localDate = recuperarData(c.getDIA_NASC2(), conversores.convertMounth(c.getMES_NASC2()));
+				aniversariante.setNome(c.getNOME_SOC_2());
+				aniversariante.setTelefone(montarTelefone2(c));
+			}
+			aniversariante.setAniversario(conversores.fomatarMD(localDate));
 			aniversariante.setData(localDate);
-			String listaFones = "";
-			if (c.getFONECOML1().trim().equals("") && !c.getCELULAR().trim().equals(""))
-				listaFones = c.getDDD1CEL() + " " + c.getCELULAR();
-			else if (!c.getFONECOML1().trim().equals("") && c.getCELULAR().trim().equals(""))
-				listaFones = c.getDDD1COML() + " " + c.getFONECOML1();
-			else if (!c.getFONECOML1().trim().equals("") && !c.getCELULAR().trim().equals(""))
-				listaFones = c.getDDD1COML() + " " + c.getFONECOML1() + "," + c.getDDD1CEL() + " "
-						+ c.getCELULAR();
-			aniversariante.setTelefone(listaFones);
-			aniversariante.setTipoSocio(1);
 			aniversariantes.add(aniversariante);
 		});
 		return aniversariantes;
 	}
-	private List<Aniversariante> processarAniversariantes2(List<Cliente> clientes2) {
-		List<Aniversariante> aniversariantes = new ArrayList<>();
-		clientes2.forEach(c -> {
-			int dia = Integer.parseInt(c.getDIA_NASC2());
-			int mes = Integer.parseInt(conversores.convertMounth(c.getMES_NASC2()));
-			LocalDate localDate = LocalDate.
-					of(00, mes, dia);
-			Aniversariante aniversariante = new Aniversariante();
-			aniversariante.setId(String.valueOf(c.getCOD()));
-			aniversariante.setStatus(c.getSTATUS());
-			aniversariante.setEmpresa(c.getEMPRESA());
-			aniversariante.setNome(c.getNOME_SOC_2());
-			aniversariante.setAniversario(dia + "/" + mes);
-			aniversariante.setEmail(c.getEMAIL_SOC_1());
-			aniversariante.setTipoSocio(2);
-			aniversariante.setData(localDate);
-			String listaFones2 = "";
-			if (c.getFONECOM2().trim().equals("") && !c.getCELULAR2().trim().equals(""))
-				listaFones2 = c.getDDD2CEL() + " " + c.getCELULAR2();
-			else if (!c.getFONECOM2().trim().equals("") && c.getCELULAR2().trim().equals(""))
-				listaFones2 = c.getDDD2COML() + " " + c.getFONECOM2();
-			else if (!c.getFONECOM2().trim().equals("") && !c.getCELULAR2().trim().equals(""))
-				listaFones2 = c.getDDD2COML() + " " + c.getFONECOM2() + "," + c.getDDD2CEL() + " "
-						+ c.getCELULAR2();
-			aniversariante.setTelefone(listaFones2);
-			aniversariantes.add(aniversariante);
-		});
-		return aniversariantes;
+
+	public LocalDate recuperarData(String dia, String mes){
+		int diaR = Integer.parseInt(dia);
+		int mesR = Integer.parseInt(conversores.convertMounth(mes));
+		return LocalDate.of(00, mesR, diaR);
 	}
-	
+
+	private String montarTelefone1(Cliente c){
+		String listaFones  = "";
+		if (c.getFONECOML1().trim().equals("") && !c.getCELULAR().trim().equals(""))
+			listaFones = c.getDDD1CEL() + " " + c.getCELULAR();
+		else if (!c.getFONECOML1().trim().equals("") && c.getCELULAR().trim().equals(""))
+			listaFones = c.getDDD1COML() + " " + c.getFONECOML1();
+		else if (!c.getFONECOML1().trim().equals("") && !c.getCELULAR().trim().equals(""))
+			listaFones = c.getDDD1COML() + " " + c.getFONECOML1() + "," + c.getDDD1CEL() + " "
+					+ c.getCELULAR();
+		return listaFones;
+	}
+
+	private String montarTelefone2(Cliente c){
+		String listaFones2  = "";
+		if (c.getFONECOM2().trim().equals("") && !c.getCELULAR2().trim().equals(""))
+			listaFones2 = c.getDDD2CEL() + " " + c.getCELULAR2();
+		else if (!c.getFONECOM2().trim().equals("") && c.getCELULAR2().trim().equals(""))
+			listaFones2 = c.getDDD2COML() + " " + c.getFONECOM2();
+		else if (!c.getFONECOM2().trim().equals("") && !c.getCELULAR2().trim().equals(""))
+			listaFones2 = c.getDDD2COML() + " " + c.getFONECOM2() + "," + c.getDDD2CEL() + " "
+					+ c.getCELULAR2();
+		return listaFones2;
+	}
 }

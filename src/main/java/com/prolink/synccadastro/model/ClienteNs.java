@@ -56,7 +56,4 @@ public class ClienteNs {
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		return result;
 	}
-	
-
-	 
 }
