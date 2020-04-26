@@ -6,6 +6,7 @@ import java.util.Calendar;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
@@ -151,7 +152,7 @@ public class Cliente implements Serializable {
 	private Calendar criadoEm;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar ultimaVersao;
-	@OneToOne(mappedBy = "cliente", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "cliente", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	private ClienteComentario comentario;
 
 	@PrePersist

@@ -1,97 +1,76 @@
 package com.prolink.synccadastro.services;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.data.util.Pair;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import com.prolink.synccadastro.exception.ClienteNotFoundException;
 import com.prolink.synccadastro.model.Cliente;
 import com.prolink.synccadastro.model.ClienteNs;
-import com.prolink.synccadastro.repository.ClienteMongoRepository;
+import com.prolink.synccadastro.repository.ClientesNs;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 public class ClientesServicesNs {
 
-	@Autowired
-	private MongoTemplate mongoTemplate;
-	@Autowired
-	private ClienteMongoRepository clientesRepository;
+	private Logger logger = LoggerFactory.getLogger(getClass());
 	
-	public Long pegarUltimoSalvo() {
-		Query query = new Query();
-		query.with(Sort.by(Sort.Order.desc("apelido")));
-		query.limit(1);
-		ClienteNs cli = mongoTemplate.findOne(query,ClienteNs.class);
-		if(cli == null) return 0L;
-		else return cli.getApelido();
+	@Autowired
+	private ClientesNs clientesNs;
+	private static Long ultimoRegistro = -1L;
+	
+	@Async
+	public CompletableFuture<List<ClienteNs>> listar(){
+		return CompletableFuture.completedFuture(clientesNs.findAll());
 	}
-
-	public void atualizar(List<Cliente> clientes, boolean atualizarTudo) {
-		Long ultimoRegistro = pegarUltimoSalvo();
-		List<ClienteNs> createList = new ArrayList<>();
-
-		List<ClienteNs> baseAtual = atualizarTudo ? new ArrayList<>() : clientesRepository.findAll();
-		clientes.forEach(c->{
-			//inserir novo
-			if(c.getCOD()>ultimoRegistro) {
-				createList.add(convert(c));
+	@Async
+	public void atualizar(List<Cliente> clientesList,boolean atualizarTudo) throws InterruptedException, ExecutionException {
+		logger.info("Iniciando atualizacao dos clientes no banco nosql");
+		ultimoRegistro = clientesNs.pegarUltimoSalvo();
+		List<ClienteNs> baseAtual = listar().get();
+		List<ClienteNs> createList = new LinkedList<>();
+		
+		clientesList.forEach(c->{
+			ClienteNs ns = convert(c);
+			Optional<ClienteNs> opt = buscarRegistro(c, baseAtual);
+			if(opt.isPresent() && atualizarTudo) {
+				ns = opt.get();
+				createList.add(ns);
 			}
-			//atualizar status
-			else {
-				if(baseAtual.isEmpty()) {
-					update(c);
-				}
-				else {
-					try {
-						//verificando se registro esta na base
-						if(buscarRegistro(c, baseAtual)) 
-							update(c);
-					}catch(ClienteNotFoundException e) {
-						ClienteNs ns = convert(c);
-						clientesRepository.save(ns);
-					}
-				}
+			//inserir novo
+			else if(c.getCOD()>ultimoRegistro) {
+				createList.add(ns);
 			}
 		});
-		Collections.sort(createList, Comparator.comparingLong(ClienteNs::getApelido));
-		save(createList);
+		salvar(createList);
+		logger.info("Concluido atualizacao dos clientes no banco nosql");
 	}
+
+	@Async
+	private void salvar(List<ClienteNs> list) {
+		logger.info("Saving a list of cliente (ns) of size {} records", list.size());
+		clientesNs.saveAll(list);
+	}
+	
 	//buscar registro na lista select do nosql e comparar se é diferente
-	private boolean buscarRegistro(Cliente c, List<ClienteNs> baseAtual) throws ClienteNotFoundException{
-		Optional<ClienteNs> ns = baseAtual.parallelStream()
-				.filter(f->f.getApelido().intValue()==c.getCOD()).findFirst();
-		ClienteNs resultConvert = convert(c);
-		if(!ns.isPresent()) throw new ClienteNotFoundException("Cliente não existe");
-		else return(!ns.get().equals(resultConvert));
+	private Optional<ClienteNs> buscarRegistro(Cliente c, List<ClienteNs> baseAtual){
+		return baseAtual
+				.parallelStream()
+				.filter(f->f.getApelido().intValue()==c.getCOD())
+				.findFirst();
 	}
 	
-	public void save(List<ClienteNs> list) {
-		clientesRepository.saveAll(list);
-	}
-	
-	private void update(Cliente cli) {
-		Query query = new Query();
-        query.addCriteria(Criteria.where("apelido")
-        		.is(cli.getCOD()));
-        Update update = new Update();
-        update.set("status", cli.getSTATUS());
-        update.set("nome", cli.getEMPRESA());
-        update.set("cnpj", cli.getCNPJ());
-        update.set("data", new Date());
-        mongoTemplate.findAndModify(query, update, ClienteNs.class);
-	}
 	private ClienteNs convert(Cliente cli) {
 		ClienteNs ns = new ClienteNs();
 		ns.setApelido((long) cli.getCOD());

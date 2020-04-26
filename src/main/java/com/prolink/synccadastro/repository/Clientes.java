@@ -10,6 +10,6 @@ import com.prolink.synccadastro.model.Cliente;
 
 @Repository
 public interface Clientes extends JpaRepository<Cliente, Integer>{
-	void save(List<Cliente> cls);
+	void salvarTudo(List<Cliente> clientes);
 	List<Cliente> listarAniversariantes(List<LocalDate> list, List<String> filtroStatus, String param1, String param2);
 }

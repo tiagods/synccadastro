@@ -16,11 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.prolink.synccadastro.model.Cliente;
-import com.prolink.synccadastro.model.ClienteComentario;
 import com.prolink.synccadastro.util.LocalDateConversor;
 
 public class ClientesImpl {
-
 	Logger logger = LoggerFactory.getLogger(getClass());
 
 	@PersistenceContext
@@ -31,11 +29,11 @@ public class ClientesImpl {
 	
 	//a anotação transactional informa que determinado metodo se encarregara de abrir a transação
 	@Transactional
-	public void save(List<Cliente> clientes) {
+	public void salvarTudo(List<Cliente> clientes) {
 		for (int i = 0; i < clientes.size(); i++) {
 			try {
 			Cliente cliente = clientes.get(i);
-			ClienteComentario com = cliente.getComentario();
+			//ClienteComentario com = cliente.getComentario();
 			if(cliente.getCOD()!=0)
 				continue;
 			Cliente cli = em.find(Cliente.class, cliente.getCOD());
@@ -50,7 +48,6 @@ public class ClientesImpl {
 			}
 		}
 	}
-
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	public List<Cliente> listarAniversariantes(List<LocalDate> list, List<String> filtroStatus, String param1,
 			String param2) {

@@ -1,6 +1,8 @@
 package com.prolink.synccadastro.scheduler;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +16,10 @@ import com.prolink.synccadastro.services.ClientesServicesNs;
 
 @Component
 public class ClientesJob{
+	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
+
 	@Autowired
 	private ClientesServices clientesJob;
 	
@@ -30,12 +34,10 @@ public class ClientesJob{
 	}
 	
 	@Scheduled(cron = "${cliente.agendamento}")
-	public void executeTwo(){
+	public void executeTwo() throws InterruptedException, ExecutionException{
 		logger.info("Start Job - Cadastro Mongo");
-		List<Cliente> clientes = clientesJob.listar();
-		clientesNs.atualizar(clientes, true);
+		CompletableFuture<List<Cliente>> clientes = clientesJob.listar();
+		clientesNs.atualizar(clientes.get(), true);
         logger.info("End of process - Cadastro Mongo");
 	}
-	
-
 }
