@@ -15,10 +15,9 @@ import com.prolink.synccadastro.services.ClientesServices;
 import com.prolink.synccadastro.services.ClientesServicesNs;
 
 @Component
-public class ClientesJob{
+public class ClientesJob {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
-	
 
 	@Autowired
 	private ClientesServices clientesJob;

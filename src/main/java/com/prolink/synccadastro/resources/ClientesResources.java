@@ -16,7 +16,7 @@ import com.prolink.synccadastro.services.ClientesServices;
 import com.prolink.synccadastro.services.ClientesServicesNs;
 
 @RestController
-@RequestMapping(value="/clientes")
+@RequestMapping(value="/api/clientes")
 public class ClientesResources {
 	
 	@Autowired
