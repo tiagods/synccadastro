@@ -15,8 +15,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Stream;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
@@ -28,11 +27,14 @@ import com.prolink.synccadastro.model.Cliente;
 import com.prolink.synccadastro.repository.Clientes;
 import com.prolink.synccadastro.util.LocalDateConversor;
 import com.prolink.synccadastro.util.UtilWorkbook;
+import rx.Completable;
+import rx.Observable;
+import rx.Subscription;
+import rx.schedulers.Schedulers;
 
 @Service
+@Slf4j
 public class ClientesServices {
-
-	Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Value("${planilha.origem}")
 	private String origemPlanilha;
@@ -53,7 +55,7 @@ public class ClientesServices {
 
 	@Async
 	public CompletableFuture<List<Cliente>> listar() {
-		logger.info("Listando todos os clientes");
+		log.info("Listando todos os clientes");
 		return CompletableFuture.completedFuture(clientes.findAll());
 	}
 
@@ -62,63 +64,62 @@ public class ClientesServices {
 		clientes.save(cliente);
 	}
 
-	@Async
-	public void iniciarAtualizacao() {
+	public Observable iniciarAtualizacao() {
 		synchronized (workbooks) {
-			if(validarExtensao()) {
-				copiarPlanilha()
-					.ifPresent(c->{
-						List<Cliente> cli = prepararPersistencia(lerDocumento(c));
-						prepararPersistenciaBase2(cli);
-					});
-			}
+			return Observable.just(validarExtensao())
+					.flatMap(c->copiarPlanilha())
+					.flatMap(c->lerDocumento(c))
+					.flatMap(list->prepararPersistencia(list))
+					.flatMap(list2->prepararPersistenciaBase2(list2));
 		}
 	}
 	
-	private boolean validarExtensao() {
-		if(workbooks.validateExtension(origemPlanilha)) return true;
-		else {
-			logger.error("Extensao de documento invalida: " + origemPlanilha);
-			return false;
-		}
+	private Observable validarExtensao() {
+		return workbooks.validateExtension(origemPlanilha);
 	}
 
-	private Optional<String> copiarPlanilha(){
+	private Observable<String> copiarPlanilha(){
 		File diretorio = new File(destinoPlanilha);
 		if (!diretorio.exists()) {
-			logger.info("Criando diretorio: {}", diretorio);
+			log.info("Criando diretorio: {}", diretorio);
 			diretorio.mkdir();
 		}
 		String valor = LocalDateTime.now().format(DateTimeFormatter.ofPattern("ddMMyyyyHHmmss"));
 		String novaPlanilha = destinoPlanilha + "/Cadastro" + valor + ".xls";
-		workbooks.copyWorkbook(origemPlanilha, novaPlanilha);
-		logger.info("Criando planilha: " + novaPlanilha);
-		return Optional.of(novaPlanilha);
+		log.info("Criando planilha: " + novaPlanilha);
+		return Observable.empty()
+				.flatMap(c -> workbooks.copyWorkbook(origemPlanilha, novaPlanilha));
 	}
 	
-	private List<Cliente> lerDocumento(String novaPlanilha){
+	private Observable<List<Cliente>> lerDocumento(String novaPlanilha) {
 		final long start = System.currentTimeMillis();
 		List<Cliente> clientesList = new LinkedList<>();
-		logger.info("Lendo planilha temporaria: " + novaPlanilha);
+		log.info("Lendo planilha temporaria: " + novaPlanilha);
+
 		Optional.ofNullable(workbooks.readWorkbook(novaPlanilha)).ifPresent(clientesList::addAll);
-		logger.info("Tempo de Leitura: {}", System.currentTimeMillis() - start);
+
+		log.info("Tempo de Leitura: {}", System.currentTimeMillis() - start);
+
 		clientesList.stream().filter(c -> c.getCOD() == 0).findFirst().ifPresent(clientesList::remove);
-		logger.info("Removendo planilha temporaria: " + novaPlanilha);
+
+		log.info("Removendo planilha temporaria: " + novaPlanilha);
 		workbooks.removeTempWorkbook(destinoPlanilha);
-		return clientesList;
-	}
-	@Async
-	private List<Cliente> prepararPersistencia(List<Cliente> clientesList) {
-		logger.info("Salvando registros na base local: {}", clientesList.size());
-		return clientes.saveAll(clientesList);
+		return Observable.just(clientesList);
 	}
 
-	private void prepararPersistenciaBase2(List<Cliente> clientesList) {
-		logger.info("Salvando registros no nosql: {}", clientesList.size());
+	Observable<List<Cliente>> prepararPersistencia(List<Cliente> clientesList) {
+		log.info("Salvando registros na base local: {}", clientesList.size());
+		return Observable.just(clientes.saveAll(clientesList));
+	}
+
+	private Observable<?> prepararPersistenciaBase2(List<Cliente> clientesList) {
+		log.info("Salvando registros no nosql: {}", clientesList.size());
 		try {
 			clienteNs.atualizar(clientesList, false);
+			return Observable.empty();
 		} catch (InterruptedException | ExecutionException e) {
-			logger.error("Erro ao salvar registros no nosql");
+			log.error("Erro ao salvar registros no nosql");
+			return Observable.error(new Exception("Erro ao salvar registros no nosql"));
 		}
 	}
 
@@ -133,7 +134,7 @@ public class ClientesServices {
 						clientes.listarAniversariantes(lista, filtroStatus, "DIA_NASC2", "MES_NASC2")))
 				.forEach(aniversariantes::addAll);
 
-		logger.info("Aniversariantes " + aniversariantes.size());
+		log.info("Aniversariantes " + aniversariantes.size());
 		Comparator<Aniversariante> comparator = Comparator.comparing(Aniversariante::getData);
 		Collections.sort(aniversariantes, comparator.thenComparing(c -> c.getId()).thenComparing(c -> c.getStatus()));
 		return aniversariantes;

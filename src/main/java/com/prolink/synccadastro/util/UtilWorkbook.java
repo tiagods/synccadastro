@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.record.crypto.Biff8EncryptionKey;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFComment;
@@ -33,8 +34,10 @@ import org.springframework.stereotype.Component;
 
 import com.prolink.synccadastro.model.Cliente;
 import com.prolink.synccadastro.model.ClienteComentario;
+import rx.Observable;
 
 @Component
+@Slf4j
 public class UtilWorkbook {
 
 	Logger logger = LoggerFactory.getLogger(getClass());
@@ -640,23 +643,25 @@ public class UtilWorkbook {
 
 	}
 
-	public void copyWorkbook(String origemPlan, String destinoPlan) {
+	public Observable<String> copyWorkbook(String origemPlan, String destinoPlan) {
 		try {
-			// copiando arquivo para um local temporario
-			Path local = Paths.get(origemPlan);
-			Path destino = Paths.get(destinoPlan);
-			Files.copy(local, destino, StandardCopyOption.REPLACE_EXISTING);
+			Files.copy(Paths.get(origemPlan), Paths.get(destinoPlan), StandardCopyOption.REPLACE_EXISTING);
+			return Observable.just(destinoPlan);
 		} catch (IOException e) {
 			logger.error(e.getMessage());
+			return Observable.error(e);
 		}
 	}
 
 	// validando extensao xls do arquivo
-	public boolean validateExtension(String arquivo) {
+	public Observable validateExtension(String arquivo) {
 		File file = new File(arquivo);
 		int pos = file.toString().lastIndexOf(".");
 		String extensao = file.toString().substring(pos + 1);
-		return (extensao.equals("xls"));
+		if(extensao.equals("xls")){
+			Observable.empty();
+		}
+		return Observable.error(new Exception("Extensao de documento invalida"));
 	}
 
 	// deletar arquivo temporario

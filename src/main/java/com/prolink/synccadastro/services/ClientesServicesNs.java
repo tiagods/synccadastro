@@ -34,6 +34,7 @@ public class ClientesServicesNs {
 	public CompletableFuture<List<ClienteNs>> listar(){
 		return CompletableFuture.completedFuture(clientesNs.findAll());
 	}
+
 	@Async
 	public void atualizar(List<Cliente> clientesList,boolean atualizarTudo) throws InterruptedException, ExecutionException {
 		logger.info("Iniciando atualizacao dos clientes no banco nosql");
