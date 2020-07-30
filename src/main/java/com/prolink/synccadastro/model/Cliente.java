@@ -22,10 +22,11 @@ import lombok.*;
 @EqualsAndHashCode(of="COD")
 @Entity
 @Table(name = "cliente")
+@ToString(onlyExplicitlyIncluded = true)
 public class Cliente implements Serializable {
 	private static final long serialVersionUID = 1L;
-	@Id private int COD;
-	private String STATUS;
+	@Id @ToString.Include private int COD;
+	@ToString.Include private String STATUS;
 	private String COMPL_STS;
 	private String ATENDIMENTO;
 	private String PROCESSOS;
@@ -34,7 +35,7 @@ public class Cliente implements Serializable {
 	private String TIPO;
 	private String REGIME_TRIBUTARIO;
 	private String QUANT_SOC_GER;
-	private String EMPRESA;
+	@ToString.Include private String EMPRESA;
 	private String NOME;
 	private String ENDERECO;
 	private String BAIRRO;
