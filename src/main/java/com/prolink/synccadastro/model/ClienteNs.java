@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -11,6 +12,7 @@ import lombok.Data;
 
 @Data
 @Document(collection = "cliente")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ClienteNs {
 	 @Id
 	 private String id;
@@ -19,7 +21,10 @@ public class ClienteNs {
 	 private String status;
 	 private String cnpj;
 	 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-	 private Date data;
+	 private Date data ;
+	 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+	 private Date modificacao;
+	 
 	 private boolean folderCreate = false;
 	@Override
 	public boolean equals(Object obj) {

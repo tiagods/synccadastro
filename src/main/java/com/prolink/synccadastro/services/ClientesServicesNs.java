@@ -45,7 +45,10 @@ public class ClientesServicesNs {
 			ClienteNs ns = convert(c);
 			Optional<ClienteNs> opt = buscarRegistro(c, baseAtual);
 			if(opt.isPresent() && atualizarTudo) {
-				ns = opt.get();
+				ClienteNs getNS = opt.get();
+				ns.setId(getNS.getId());
+				ns.setFolderCreate(getNS.isFolderCreate());
+				ns.setData(getNS.getData());
 				createList.add(ns);
 			}
 			//inserir novo
@@ -57,7 +60,6 @@ public class ClientesServicesNs {
 		logger.info("Concluido atualizacao dos clientes no banco nosql");
 	}
 
-	@Async
 	private void salvar(List<ClienteNs> list) {
 		logger.info("Saving a list of cliente (ns) of size {} records", list.size());
 		clientesNs.saveAll(list);
@@ -79,6 +81,7 @@ public class ClientesServicesNs {
 		ns.setFolderCreate(false);
 		ns.setNome(cli.getEMPRESA());
 		ns.setStatus(cli.getSTATUS());
+		ns.setModificacao(new Date());
 		return ns;
 	}
 }
