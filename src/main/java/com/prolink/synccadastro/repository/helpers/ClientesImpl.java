@@ -49,15 +49,15 @@ public class ClientesImpl {
 		}
 	}
 	@SuppressWarnings({ "unchecked", "deprecation" })
-	public List<Cliente> listarAniversariantes(List<LocalDate> list, List<String> filtroStatus, String param1,
-			String param2) {
+	public List<Cliente> listarAniversariantes(List<LocalDate> list, List<String> filtroStatus, String dia,
+			String mes) {
 		List<Cliente> listas = new ArrayList<>();
 		for (LocalDate d : list) {
-			Criteria criteria = em.unwrap(Session.class).createCriteria(Cliente.class);
-			criteria.add(Restrictions.ilike(param1, String.valueOf(d.getDayOfMonth())));
-			criteria.add(Restrictions.ilike(param2, conversores.convertMounth(d.getMonthValue())));
-			criteria.add(Restrictions.in("STATUS", filtroStatus));
-			List<Cliente> object = (List<Cliente>) criteria.list();
+			List<Cliente> object = em.unwrap(Session.class).createCriteria(Cliente.class)
+					.add(Restrictions.ilike(dia, String.valueOf(d.getDayOfMonth())))
+					.add(Restrictions.ilike(mes, conversores.convertMounth(d.getMonthValue())))
+					.add(Restrictions.not(Restrictions.in("STATUS", filtroStatus)))
+					.list();
 			listas.addAll(object);
 		}
 		return listas;

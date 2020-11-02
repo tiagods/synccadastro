@@ -65,7 +65,7 @@ public class ClientesServicesNs {
 		clientesNs.saveAll(list);
 	}
 	
-	//buscar registro na lista select do nosql e comparar se é diferente
+	//buscar registro na lista select.sql do nosql e comparar se é diferente
 	private Optional<ClienteNs> buscarRegistro(Cliente c, List<ClienteNs> baseAtual){
 		return baseAtual
 				.parallelStream()

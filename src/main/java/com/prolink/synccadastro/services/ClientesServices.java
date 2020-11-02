@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.slf4j.Logger;
@@ -28,6 +29,8 @@ import com.prolink.synccadastro.model.Cliente;
 import com.prolink.synccadastro.repository.Clientes;
 import com.prolink.synccadastro.util.LocalDateConversor;
 import com.prolink.synccadastro.util.UtilWorkbook;
+
+import static java.util.stream.Collectors.toSet;
 
 @Service
 public class ClientesServices {
@@ -48,8 +51,8 @@ public class ClientesServices {
 	@Autowired
 	private LocalDateConversor conversores;
 
-	private final List<String> filtroStatus = Arrays.asList("PLATINA", "PRATA 2", "OURO 3", "OURO 2", "PRATA 3",
-			"OURO 1", "BRONZE", "PRATA 1", "Exceção", "Inativa", "Em andamento");
+	@Value("${aniversariantes.exclude}")
+	private List<String> filtroStatus;
 
 	@Async
 	public CompletableFuture<List<Cliente>> listar() {
@@ -123,47 +126,39 @@ public class ClientesServices {
 	}
 
 	public List<Aniversariante> getAniversariantes() {
-		List<Aniversariante> aniversariantes = new ArrayList<>();
 		List<LocalDate> lista = conversores.tratarDias();
-
-		Stream.of(
-				processarAniversariantes(Aniversariante.Socio.SOCIO1,
-						clientes.listarAniversariantes(lista, filtroStatus, "DIA_NASC1", "MES_NASC1")),
-				processarAniversariantes(Aniversariante.Socio.SOCIO2,
-						clientes.listarAniversariantes(lista, filtroStatus, "DIA_NASC2", "MES_NASC2")))
-				.forEach(aniversariantes::addAll);
-
-		logger.info("Aniversariantes " + aniversariantes.size());
+		List<Aniversariante> aniversariantes = Stream.concat(
+				processarAniversariantes(Aniversariante.Socio.SOCIO1, clientes.listarAniversariantes(lista, filtroStatus, "DIA_NASC1", "MES_NASC1")),
+				processarAniversariantes(Aniversariante.Socio.SOCIO2, clientes.listarAniversariantes(lista, filtroStatus, "DIA_NASC2", "MES_NASC2")))
+				.collect(Collectors.toList());
 		Comparator<Aniversariante> comparator = Comparator.comparing(Aniversariante::getData);
 		Collections.sort(aniversariantes, comparator.thenComparing(c -> c.getId()).thenComparing(c -> c.getStatus()));
 		return aniversariantes;
 	}
 
-	private List<Aniversariante> processarAniversariantes(Aniversariante.Socio socio, List<Cliente> clientes) {
-		List<Aniversariante> aniversariantes = new ArrayList<>();
-		clientes.forEach(c -> {
-			Aniversariante aniversariante = new Aniversariante();
-			aniversariante.setId(String.valueOf(c.getCOD()));
-			aniversariante.setStatus(c.getSTATUS());
-			aniversariante.setEmpresa(c.getEMPRESA());
-			aniversariante.setTipoSocio(socio.getValor());
-			aniversariante.setEmail(c.getEMAIL_SOC_1());
-
-			LocalDate localDate = null;
-			if (socio.equals(Aniversariante.Socio.SOCIO1)) {
-				localDate = recuperarData(c.getDIA_NASC1(), conversores.convertMounth(c.getMES_NASC1()));
-				aniversariante.setNome(c.getNOME_SOCIO1());
-				aniversariante.setTelefone(montarTelefone1(c));
-			} else {
-				localDate = recuperarData(c.getDIA_NASC2(), conversores.convertMounth(c.getMES_NASC2()));
-				aniversariante.setNome(c.getNOME_SOC_2());
-				aniversariante.setTelefone(montarTelefone2(c));
-			}
-			aniversariante.setAniversario(conversores.fomatarMD(localDate));
-			aniversariante.setData(localDate);
-			aniversariantes.add(aniversariante);
-		});
-		return aniversariantes;
+	private Stream<Aniversariante> processarAniversariantes(Aniversariante.Socio socio, List<Cliente> clientes) {
+		return clientes.stream()
+				.map(c -> {
+					Aniversariante aniversariante = new Aniversariante();
+					aniversariante.setId(String.valueOf(c.getCOD()));
+					aniversariante.setStatus(c.getSTATUS());
+					aniversariante.setEmpresa(c.getEMPRESA());
+					aniversariante.setTipoSocio(socio.getValor());
+					aniversariante.setEmail(c.getEMAIL_SOC_1());
+					LocalDate localDate;
+					if (socio.equals(Aniversariante.Socio.SOCIO1)) {
+						localDate = recuperarData(c.getDIA_NASC1(), c.getMES_NASC1());
+						aniversariante.setNome(c.getNOME_SOCIO1());
+						aniversariante.setTelefone(montarTelefone1(c));
+					} else {
+						localDate = recuperarData(c.getDIA_NASC2(), c.getMES_NASC2());
+						aniversariante.setNome(c.getNOME_SOC_2());
+						aniversariante.setTelefone(montarTelefone2(c));
+					}
+					aniversariante.setAniversario(conversores.fomatarMD(localDate));
+					aniversariante.setData(localDate);
+					return aniversariante;
+				});
 	}
 
 	public LocalDate recuperarData(String dia, String mes) {
