@@ -1,16 +1,17 @@
 spring:
   profiles: dev
   datasource:
-    url: jdbc:postgresql://192.168.0.200/processos
-    username: synccadastro
-    password: 9BWAB1SW6S5UD7RTGN8IFA
+    url: jdbc:postgresql://localhost/processos
+    username: admin
+    password: admin
   data:
     mongodb:
-      username: prolink
-      password: VFrs8RYp8CceZCeNGO474247bqafLdhK
-      host: ec2-107-22-145-62.compute-1.amazonaws.com
-      port: 27017
-      database: prolink
+      uri: ${MONGO_TEST_URI}
+      #database: ${MONGO_DB:prolink}
+      #username: ${MONGO_USER:prolink}
+      #password: ${MONGO_PASSWORD:prolink}
+      #host: ${MONGO_HOST:127.0.0.1}
+      #port: 27017
   jpa:
     database-platform: org.hibernate.dialect.PostgresPlusDialect
     properties:
@@ -19,7 +20,7 @@ spring:
           lob:
             non_contextual_creation: true
 logging:
-  config: src/main/resources/logback-dev.xml
+  config: classpath:logback-dev.xml
 planilha:
   origem: C:/TEMP/planilha.xls
   destino: C:/TEMP/syncFiles
