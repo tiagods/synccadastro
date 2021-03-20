@@ -1,0 +1,10 @@
+spring:
+  profiles:
+    active: prod
+  jmx:
+    default-domain:
+      com.prolink.synccadastro
+aniversariantes:
+  exclude: REGULARIZAÇÃO,CONJUR,JURÍDICO,EXTINTA,ADVOCACIA/OUTROS,ASSOCIAÇÃO,JURÍDICO/INAPTA
+application:
+  name: synccadastro

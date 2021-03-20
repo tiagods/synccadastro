@@ -14,8 +14,7 @@ target/*
 .mtj.tmp/
 
 #Security
-application.properties
-WebSecurityConfig.java
+application-prod.yml
 
 # Package Files #
 *.jar

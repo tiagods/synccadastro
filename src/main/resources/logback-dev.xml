@@ -2,8 +2,7 @@
 
 <configuration debug="false">
     <!--Define the storage address of the log file Do not use the relative path in the configuration of LogBack-->
-    <property name="LOG_HOME" value="C:/LOGS"/>
-    <property resource="application.properties" />
+    <property name="LOG_HOME" value="C:/TMP/LOGS"/>
 
     <!--  Console output -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -31,30 +30,9 @@
         </triggeringPolicy>
     </appender>
 
-    <!--myibatis log configure-->
-    <logger name="com.apache.ibatis" level="TRACE"/>
-    <logger name="java.sql.Connection" level="DEBUG"/>
-    <logger name="java.sql.Statement" level="DEBUG"/>
-    <logger name="java.sql.PreparedStatement" level="DEBUG"/>
-
-    <!--Log asynchronous to the database -->
-    <appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
-s        <!--Log asynchronous to the database -->s
-        <connectionSource class="ch.qos.logback.core.db.DataSourceConnectionSource">
-            <!--connection pool  -->
-            <dataSource class="org.apache.commons.dbcp.BasicDataSource">
-                <driverClassName>org.postgresql.Driver</driverClassName>
-                <url>${url.logs}</url>
-                <username>${spring.datasource.username}</username>
-                <password>${spring.datasource.password}</password>
-            </dataSource>
-        </connectionSource>
-    </appender>
-
     <!--  Log output level -->
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="DAYFILE"/>
-        <appender-ref ref="DB"/>
     </root>
 </configuration>
