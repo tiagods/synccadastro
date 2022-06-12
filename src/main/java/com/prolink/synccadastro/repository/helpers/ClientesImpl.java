@@ -24,9 +24,6 @@ public class ClientesImpl {
 	@PersistenceContext
 	private EntityManager em;
 	
-	@Autowired
-	private LocalDateConversor conversores;
-	
 	//a anotação transactional informa que determinado metodo se encarregara de abrir a transação
 	@Transactional
 	public void salvarTudo(List<Cliente> clientes) {
@@ -55,7 +52,7 @@ public class ClientesImpl {
 		for (LocalDate d : list) {
 			List<Cliente> object = em.unwrap(Session.class).createCriteria(Cliente.class)
 					.add(Restrictions.ilike(dia, String.valueOf(d.getDayOfMonth())))
-					.add(Restrictions.ilike(mes, conversores.convertMounth(d.getMonthValue())))
+					.add(Restrictions.ilike(mes, LocalDateConversor.convertMounth(d.getMonthValue())))
 					.add(Restrictions.not(Restrictions.in("STATUS", filtroStatus)))
 					.list();
 			listas.addAll(object);

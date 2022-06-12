@@ -33,3 +33,4 @@ hs_err_pid*
 /.apt_generated_tests/
 /.idea
 Cadastro.xls
+.DS_Store

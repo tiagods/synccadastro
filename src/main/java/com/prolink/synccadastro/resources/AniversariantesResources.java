@@ -1,5 +1,6 @@
 package com.prolink.synccadastro.resources;
 
+import com.prolink.synccadastro.services.AniversariantesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +14,10 @@ import com.prolink.synccadastro.services.ClientesServices;;
 @RequestMapping(value="/api/aniversariantes")
 public class AniversariantesResources {
 	@Autowired
-	private ClientesServices clientes;
+	private AniversariantesService aniversariantesService;
 	
 	@GetMapping
 	public ResponseEntity<?> index() {
-		return ResponseEntity.status(HttpStatus.OK).body(clientes.getAniversariantes());
+		return ResponseEntity.status(HttpStatus.OK).body(aniversariantesService.getAniversariantes());
 	}
 }
