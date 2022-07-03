@@ -2,8 +2,7 @@ package com.prolink.synccadastro.services;
 
 import com.prolink.synccadastro.model.Aniversariante;
 import com.prolink.synccadastro.model.Cliente;
-import com.prolink.synccadastro.repository.Clientes;
-import com.prolink.synccadastro.util.LocalDateConversor;
+import com.prolink.synccadastro.util.LocalDateConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,7 @@ public class AniversariantesService {
     @Autowired
     private ClientesServices clientes;
     public List<Aniversariante> getAniversariantes() {
-        List<LocalDate> lista = LocalDateConversor.tratarDias();
+        List<LocalDate> lista = LocalDateConverter.GetDaysOfWeek();
         List<Aniversariante> aniversariantes = Stream.concat(
                         processarAniversariantes(Aniversariante.Socio.SOCIO1, clientes.listarAniversariantes(lista, filtroStatus, "DIA_NASC1", "MES_NASC1")),
                         processarAniversariantes(Aniversariante.Socio.SOCIO2, clientes.listarAniversariantes(lista, filtroStatus, "DIA_NASC2", "MES_NASC2")))
@@ -52,7 +51,7 @@ public class AniversariantesService {
                         aniversariante.setNome(c.getNOME_SOC_2());
                         aniversariante.setTelefone(montarTelefone2(c));
                     }
-                    aniversariante.setAniversario(LocalDateConversor.fomatarMD(localDate));
+                    aniversariante.setAniversario(LocalDateConverter.formatMD(localDate));
                     aniversariante.setData(localDate);
                     return aniversariante;
                 });
@@ -60,7 +59,7 @@ public class AniversariantesService {
 
     public LocalDate recuperarData(String dia, String mes) {
         int diaR = Integer.parseInt(dia);
-        int mesR = Integer.parseInt(LocalDateConversor.convertMounth(mes));
+        int mesR = Integer.parseInt(LocalDateConverter.ConvertMonth(mes));
         return LocalDate.of(00, mesR, diaR);
     }
 

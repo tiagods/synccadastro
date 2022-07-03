@@ -6,7 +6,7 @@ spring:
     password: admin
   data:
     mongodb:
-      uri: ${MONGO_TEST_URI:mongodb://localhost:27017}
+      uri: ${MONGO_TEST_URI:mongodb://localhost:27017/prolink}
       #database: ${MONGO_DB:prolink}
       #username: ${MONGO_USER:prolink}
       #password: ${MONGO_PASSWORD:prolink}
@@ -20,16 +20,16 @@ spring:
           lob:
             non_contextual_creation: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
 hibernate:
   hbm2ddl:
     auto: update
 logging:
   config: classpath:logback-dev.xml
 planilha:
-  origem: Cadastro.xlsx
+  origem: C:/TMP/Cadastro.xlsx
   destino: C:/TMP/LOGS
-  senha: 1234
+  senha: ${CADASTRO_SENHA:1234}
   agendamento: 0 0 0,13,18 ? * MON-FRI
 cliente:
   agendamento: 0 0 0 ? * SUN

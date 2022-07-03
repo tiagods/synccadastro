@@ -7,16 +7,14 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.prolink.synccadastro.model.Cliente;
-import com.prolink.synccadastro.util.LocalDateConversor;
+import com.prolink.synccadastro.util.LocalDateConverter;
 
 public class ClientesImpl {
 	Logger logger = LoggerFactory.getLogger(getClass());
@@ -52,7 +50,7 @@ public class ClientesImpl {
 		for (LocalDate d : list) {
 			List<Cliente> object = em.unwrap(Session.class).createCriteria(Cliente.class)
 					.add(Restrictions.ilike(dia, String.valueOf(d.getDayOfMonth())))
-					.add(Restrictions.ilike(mes, LocalDateConversor.convertMounth(d.getMonthValue())))
+					.add(Restrictions.ilike(mes, LocalDateConverter.ConvertMonth(d.getMonthValue())))
 					.add(Restrictions.not(Restrictions.in("STATUS", filtroStatus)))
 					.list();
 			listas.addAll(object);

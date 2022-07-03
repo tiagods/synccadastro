@@ -37,35 +37,36 @@ public abstract class AbstractWorkbookProcessor implements WorkbookProcessor {
 
         Iterator<Row> linha = sheet.rowIterator();
         Map<Integer, String> colunas = new HashMap<>();
-        int positionCodigo = 0;
+        int positionCodIndex = 0;
 
         while (linha.hasNext()) {
             Row row = linha.next();
             if (row == null) break;
             if (row.getRowNum() == 0) {
-                positionCodigo = getCodPosition(row, colunas);
+                positionCodIndex = checkColumnsPositions(row, colunas);
                 continue;// pular a 1a linha
             }
 
-            Cliente cli = getCliente(row, colunas, positionCodigo);
+            Cliente cli = getCliente(row, colunas, positionCodIndex);
             if(ObjectUtils.isEmpty(cli)) break;
             if (cli.getCOD() != 0) lista.add(cli);
         }
         return lista;
     }
 
-    private Integer getCodPosition(Row row, Map<Integer, String> colunas) {
+    private Integer checkColumnsPositions(Row row, Map<Integer, String> colunas) {
         // pegar nome das colunas
+        int codIndex = 0;
         Iterator<Cell> columns = row.cellIterator();
         while (columns.hasNext()) {
             Cell celula = columns.next();
             String valor = readingCell(celula).toUpperCase().trim().replace("-", "_").replace(" ", "_");
             colunas.put(celula.getColumnIndex(), valor);
-            if (valor.toUpperCase().trim().equals("COD")) {
-                return celula.getColumnIndex();
+            if (valor.toUpperCase().trim().equals("COD")){
+                codIndex = celula.getColumnIndex();
             }
         }
-        return 0;
+        return codIndex;
     }
 
     private Cliente getCliente(Row row, Map<Integer, String> colunas, int positionCodigo) {
