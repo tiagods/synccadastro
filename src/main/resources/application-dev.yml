@@ -2,11 +2,11 @@ spring:
   profiles: dev
   datasource:
     url: jdbc:postgresql://localhost/processos
-    username: admin
+    username: postgres
     password: admin
   data:
     mongodb:
-      uri: ${MONGO_TEST_URI}
+      uri: ${MONGO_TEST_URI:mongodb://localhost:27017}
       #database: ${MONGO_DB:prolink}
       #username: ${MONGO_USER:prolink}
       #password: ${MONGO_PASSWORD:prolink}
@@ -19,11 +19,16 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+    hibernate:
+      ddl-auto: create
+hibernate:
+  hbm2ddl:
+    auto: update
 logging:
   config: classpath:logback-dev.xml
 planilha:
-  origem: C:/TEMP/planilha.xls
-  destino: C:/TEMP/syncFiles
+  origem: Cadastro.xlsx
+  destino: C:/TMP/LOGS
   senha: 1234
   agendamento: 0 0 0,13,18 ? * MON-FRI
 cliente:

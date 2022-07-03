@@ -8,13 +8,12 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-@Component
 public class LocalDateConversor {
-    public String fomatarMD(LocalDate date){
+    public static String fomatarMD(LocalDate date){
         return date.format(DateTimeFormatter.ofPattern("MM/dd"));
     }
 
-    public List<LocalDate> tratarDias() {
+    public static List<LocalDate> tratarDias() {
         List<LocalDate> lista = new ArrayList<>();
         LocalDate hoje = LocalDate.now();
         LocalDate segunda = null;
@@ -104,7 +103,7 @@ public class LocalDateConversor {
 
     // use localdate para o metodo conversor, se for usar calendar (0 - Janeiro a 11
     // - Dezembro) soma calendar.get(Calendar.Month)+1
-    public String convertMounth(int mes) {
+    public static String convertMounth(int mes) {
         switch (mes) {
             case 1:
                 return "Janeiro";
@@ -134,7 +133,7 @@ public class LocalDateConversor {
         return "";
     }
 
-    public String convertMounth(String mes) {
+    public static String convertMounth(String mes) {
         switch (mes.toUpperCase()) {
             case "JANEIRO":
                 return "01";
