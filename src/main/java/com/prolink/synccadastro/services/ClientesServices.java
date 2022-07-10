@@ -60,10 +60,11 @@ public class ClientesServices {
 				WorkbookProcessor processor = abstractWorkbookFactory.getWorkbookService(Paths.get(origemPlanilha), Paths.get(destinoPlanilha), senha);
 				Optional<Path> resultFile = processor.createTemporaryWorkbook();
 				if(resultFile.isPresent()) {
-					List<Cliente> cli = processor.readWorkbook(resultFile.get());
+					List<Cliente> clienteList = processor.readWorkbook(resultFile.get());
 					processor.deleteTemporaryWorkbook();
-					prepararPersistencia(cli);
-					prepararPersistenciaBase2(cli);
+					prepararPersistencia(clienteList);
+					prepararPersistenciaBase2(clienteList);
+					clienteList.clear();
 				}
 			} catch (IOException e) {
 				throw new RuntimeException(e);
