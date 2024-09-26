@@ -4,6 +4,10 @@ spring:
   jmx:
     default-domain:
       com.prolink.synccadastro
+management:
+  endpoint:
+    health:
+      show-details: always
 aniversariantes:
   exclude: REGULARIZAÇÃO,CONJUR,JURÍDICO,EXTINTA,ADVOCACIA/OUTROS,ASSOCIAÇÃO,JURÍDICO/INAPTA
 application:

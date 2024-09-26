@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+import com.prolink.synccadastro.services.AniversariantesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +25,13 @@ public class ClientesResources {
 	
 	@Autowired
 	private ClientesServicesNs clientesNs;
-	
+
+	@Autowired
+	private AniversariantesService aniversariantesService;
 	
 	@GetMapping(value="/aniversarios")
 	ResponseEntity<?> aniversariantes(){
-		return ResponseEntity.status(HttpStatus.OK).body(clientes.getAniversariantes());
+		return ResponseEntity.status(HttpStatus.OK).body(aniversariantesService.getAniversariantes());
 	}
 	
 	@GetMapping(value="/atualizar")

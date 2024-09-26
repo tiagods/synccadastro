@@ -5,16 +5,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-
-@Component
-public class LocalDateConversor {
-    public String fomatarMD(LocalDate date){
+public class LocalDateConverter {
+    public static String formatMD(LocalDate date){
         return date.format(DateTimeFormatter.ofPattern("MM/dd"));
     }
 
-    public List<LocalDate> tratarDias() {
+    public static List<LocalDate> GetDaysOfWeek() {
         List<LocalDate> lista = new ArrayList<>();
         LocalDate hoje = LocalDate.now();
         LocalDate segunda = null;
@@ -104,8 +100,8 @@ public class LocalDateConversor {
 
     // use localdate para o metodo conversor, se for usar calendar (0 - Janeiro a 11
     // - Dezembro) soma calendar.get(Calendar.Month)+1
-    public String convertMounth(int mes) {
-        switch (mes) {
+    public static String ConvertMonth(int month) {
+        switch (month) {
             case 1:
                 return "Janeiro";
             case 2:
@@ -134,8 +130,8 @@ public class LocalDateConversor {
         return "";
     }
 
-    public String convertMounth(String mes) {
-        switch (mes.toUpperCase()) {
+    public static String ConvertMonth(String month) {
+        switch (month.toUpperCase()) {
             case "JANEIRO":
                 return "01";
             case "FEVEREIRO":
