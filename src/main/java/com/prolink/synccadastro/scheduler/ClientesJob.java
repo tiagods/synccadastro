@@ -37,6 +37,7 @@ public class ClientesJob {
 		logger.info("Start Job - Cadastro Mongo");
 		CompletableFuture<List<Cliente>> clientes = clientesJob.listar();
 		clientesNs.atualizar(clientes.get(), true);
+		clientes.get().clear();
         logger.info("End of process - Cadastro Mongo");
 	}
 }
