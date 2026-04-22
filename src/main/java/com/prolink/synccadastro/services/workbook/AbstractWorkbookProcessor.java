@@ -594,7 +594,7 @@ public abstract class AbstractWorkbookProcessor implements WorkbookProcessor {
     }
 
     private String readingCell(Cell celula) { // metodo usado para tratar as celulas
-        switch (celula.getCellTypeEnum()) {
+        switch (celula.getCellType()) {
             case NUMERIC:
                 if (DateUtil.isCellDateFormatted(celula))
                     return new SimpleDateFormat("dd/MM/yyyy").format(celula.getDateCellValue());// campo do tipo data

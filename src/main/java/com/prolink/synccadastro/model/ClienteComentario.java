@@ -1,18 +1,16 @@
 package com.prolink.synccadastro.model;
 
 import java.io.Serializable;
-import java.util.Calendar;
+import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -392,10 +390,8 @@ public class ClienteComentario implements Serializable {
 	private String OBS;
 	@Column(columnDefinition = "text")
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar criadoEm;
-	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar ultimaVersao;
+	private LocalDateTime criadoEm;
+	private LocalDateTime ultimaVersao;
 
 	@OneToOne
 	@JoinColumn(name = "cliente_id")
@@ -403,12 +399,12 @@ public class ClienteComentario implements Serializable {
 
 	@PrePersist
 	private void preInsercao() {
-		criadoEm = Calendar.getInstance();
+		criadoEm = LocalDateTime.now();
 		ultimaVersao = criadoEm;
 	}
 
 	@PreUpdate
 	private void preAtualizacao() {
-		ultimaVersao = Calendar.getInstance();
+		ultimaVersao = LocalDateTime.now();
 	}
 }

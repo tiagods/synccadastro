@@ -1,19 +1,17 @@
 package com.prolink.synccadastro.model;
 
 import java.io.Serializable;
-import java.util.Calendar;
+import java.time.LocalDateTime;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
 
 import lombok.*;
 
@@ -149,20 +147,19 @@ public class Cliente implements Serializable {
 	private String CELULAR2;
 	@Column(columnDefinition = "text")
 	private String OBS;
-	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar criadoEm;
-	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar ultimaVersao;
+	private LocalDateTime criadoEm;
+	private LocalDateTime ultimaVersao;
 	@OneToOne(mappedBy = "cliente", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	private ClienteComentario comentario;
 
 	@PrePersist
 	private void preInsercao() {
-		criadoEm = Calendar.getInstance();
+		criadoEm = LocalDateTime.now();
 		ultimaVersao = criadoEm;
 	}
+
 	@PreUpdate
 	private void preAtualizacao() {
-		ultimaVersao = Calendar.getInstance();
+		ultimaVersao = LocalDateTime.now();
 	}
 }
