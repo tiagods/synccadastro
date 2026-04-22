@@ -2,7 +2,7 @@
 *.class
 target/*
 .settings
-
+build/*
 
 # Log file
 *.log
